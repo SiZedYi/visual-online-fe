@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800">
+  <!-- Asphalt background -->
+  <rect width="1000" height="800" fill="#555555"/>
+  
+  <!-- Parking spots - Left section -->
+  <!-- Row 1 -->
+  <rect x="30" y="10" width="40" height="70" fill="none" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+  <rect x="80" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="110" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="140" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="170" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="200" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="230" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="260" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="290" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="320" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="350" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="380" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="410" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  
+  <!-- Row 2 -->
+  <rect x="30" y="210" width="40" height="70" fill="none" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+  <rect x="80" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="110" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="140" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="170" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="200" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="230" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="260" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="290" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="320" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="350" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="380" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="410" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  
+  <!-- Row 3 -->
+  <rect x="30" y="410" width="40" height="70" fill="none" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+  <rect x="80" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="110" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="140" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="170" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="200" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="230" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="260" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="290" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="320" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="350" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="380" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="410" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  
+  <!-- Row 4 -->
+  <rect x="30" y="610" width="40" height="70" fill="none" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+  <rect x="80" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="110" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="140" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="170" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="200" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="230" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="260" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="290" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="320" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="350" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="380" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="410" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  
+  <!-- Center island dividers -->
+  <rect x="470" y="10" width="30" height="70" rx="15" fill="#888888" stroke="white" stroke-width="2"/>
+  <rect x="470" y="210" width="30" height="70" rx="15" fill="#888888" stroke="white" stroke-width="2"/>
+  <rect x="470" y="410" width="30" height="70" rx="15" fill="#888888" stroke="white" stroke-width="2"/>
+  <rect x="470" y="610" width="30" height="70" rx="15" fill="#888888" stroke="white" stroke-width="2"/>
+  
+  <rect x="570" y="10" width="30" height="70" rx="15" fill="#888888" stroke="white" stroke-width="2"/>
+  <rect x="570" y="210" width="30" height="70" rx="15" fill="#888888" stroke="white" stroke-width="2"/>
+  <rect x="570" y="410" width="30" height="70" rx="15" fill="#888888" stroke="white" stroke-width="2"/>
+  <rect x="570" y="610" width="30" height="70" rx="15" fill="#888888" stroke="white" stroke-width="2"/>
+  
+  <!-- Parking spots - Right section -->
+  <!-- Row 1 -->
+  <rect x="620" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="650" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="680" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="710" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="740" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="770" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="800" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="830" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="860" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="890" y="10" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="920" y="10" width="30" height="70" rx="15" fill="#888888" stroke="white" stroke-width="2"/>
+  
+  <!-- Row 2 -->
+  <rect x="620" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="650" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="680" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="710" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="740" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="770" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="800" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="830" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="860" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="890" y="210" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="920" y="210" width="30" height="70" rx="15" fill="#888888" stroke="white" stroke-width="2"/>
+  
+  <!-- Row 3 -->
+  <rect x="620" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="650" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="680" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="710" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="740" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="770" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="800" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="830" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="860" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="890" y="410" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="920" y="410" width="30" height="70" rx="15" fill="#888888" stroke="white" stroke-width="2"/>
+  
+  <!-- Row 4 -->
+  <rect x="620" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="650" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="680" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="710" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="740" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="770" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="800" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="830" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="860" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="890" y="610" width="30" height="70" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="920" y="610" width="30" height="70" rx="15" fill="#888888" stroke="white" stroke-width="2"/>
+  
+  <!-- Handicap spots -->
+  <rect x="980" y="10" width="15" height="70" fill="none" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+  <rect x="980" y="210" width="15" height="70" fill="none" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+  <rect x="980" y="410" width="15" height="70" fill="none" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+  <rect x="980" y="610" width="15" height="70" fill="none" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+</svg>
