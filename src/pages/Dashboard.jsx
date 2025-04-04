@@ -69,7 +69,6 @@ const Dashboard = () => {
       <Sidebar />
       <Layout style={{ padding: 20 }}>
       <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Parking Lot Management System</h1>
       
       {!parkingLayout ? (
         <div className="text-center p-8 bg-gray-100 rounded">
@@ -139,6 +138,7 @@ const Dashboard = () => {
         <ParkingLot
           initialLayout={parkingLayout}
           onLayoutChange={(layout) => console.log('Layout updated:', layout)}
+          parkingLotId="floor1"
         />
       )}
       
