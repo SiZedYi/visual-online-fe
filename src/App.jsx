@@ -10,7 +10,7 @@ import MapManagement from "./pages/MapManagement";
 
 const config = {
   token: {
-    fontFamily: "Raleway",
+    fontFamily: "Roboto",
     fontSize: "18px",
   },
   components: {
