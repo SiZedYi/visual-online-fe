@@ -39,9 +39,12 @@ useEffect(() => {
       
       spotData.forEach(spot => {
         if (spot.currentCar) {
-          carMap[spot.spotId] = spot.currentCar;
+          carMap[spot.spotId] = {
+            id: spot.currentCar,
+            color: spot.currentCarColor
+          };
         }
-      });
+      });      
       
       setParkedCars(carMap);
       console.log(carMap);
@@ -184,19 +187,19 @@ const renderSpots = () => {
             width={spot.width - 6} 
             height={spot.height - 10} 
             rx={5} 
-            fill={parkedCars[spot.id].color} 
+            fill={parkedCars[spot.id].color || '#888'}
           />
           <circle 
             cx={spot.x + 8} 
             cy={spot.y + spot.height - 12} 
             r={3} 
-            fill="#333" 
+            fill="#FFBF00" 
           />
           <circle 
             cx={spot.x + spot.width - 8} 
             cy={spot.y + spot.height - 12} 
             r={3} 
-            fill="#333" 
+            fill="#FFBF00" 
           />
           <rect 
             x={spot.x + 5} 
@@ -230,6 +233,7 @@ const renderSpots = () => {
             </foreignObject>
           )}
         </g>
+
       ) : (
         /* Add button for empty spots - only visible in edit mode */
         editMode && (
