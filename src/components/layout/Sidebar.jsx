@@ -1,59 +1,108 @@
-import React from "react";
+import React, { useState } from "react";
 import { Layout, Menu } from "antd";
-import { DashboardOutlined, CarOutlined, BarChartOutlined, WarningOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  DashboardOutlined,
+  CarOutlined,
+  BarChartOutlined,
+  WarningOutlined,
+  UserOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined
+} from "@ant-design/icons";
 import { useLocation, NavLink } from "react-router-dom";
 
 const { Sider } = Layout;
 
 const Sidebar = () => {
-  const location = useLocation(); // Lấy đường dẫn hiện tại
-  
+  const location = useLocation();
+  const [collapsed, setCollapsed] = useState(false);
+
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
+
   return (
-    <Sider width={350} style={{ height: "100vh", background: "#f8f9fd" }}>
-      <div style={{ padding: 20, fontWeight: "bold", fontSize: 36, color: "#790097" }}>
-        VISUAL ONLINE <br /> <span style={{ fontSize: 25, color: "#333" }}>PARKING MANAGER</span>
+    <Sider
+      collapsible
+      collapsed={collapsed}
+      onCollapse={setCollapsed}
+      width={350}
+      style={{ height: "100vh", background: "#f8f9fd", position: "relative" }}
+      trigger={null} // We'll use a custom trigger
+    >
+      {/* Toggle Button - Top Right Corner */}
+      <div
+        style={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+          zIndex: 1,
+          cursor: "pointer",
+          fontSize: 18,
+          color: "#790097"
+        }}
+        onClick={toggleCollapsed}
+      >
+        {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
       </div>
 
+      {/* Title */}
+      <div
+        style={{
+          padding: collapsed ? "20px 20px 0 20px" : 20,
+          fontWeight: "bold",
+          fontSize: collapsed ? 20 : 36,
+          color: "#790097",
+          transition: "all 0.3s"
+        }}
+      >
+        {!collapsed ? (
+          <>
+            VISUAL ONLINE <br />
+            <span style={{ fontSize: 20, color: "#333" }}>
+              PARKING MANAGER
+            </span>
+          </>
+        ) : (
+          ""
+        )}
+      </div>
+
+      {/* Menu */}
       <Menu
         mode="vertical"
-        selectedKeys={[location.pathname]} // Đặt key dựa vào đường dẫn hiện tại
-        style={{ borderRadius: "10px" }}
+        selectedKeys={[location.pathname]}
+        style={{ borderRadius: "10px", marginTop: 20 }}
         items={[
           {
             key: "/",
             icon: <DashboardOutlined />,
-            label: <NavLink style={{padding:"20px"}} to="/" className="menu-link">Dashboard</NavLink>,
-            style: { height: "60px", lineHeight: "60px", borderRadius: "10px" },
+            label: <NavLink to="/">Dashboard</NavLink>,
           },
           {
             key: "/map",
             icon: <CarOutlined />,
-            label: <NavLink style={{padding:"20px"}} to="/map" className="menu-link">Map Management</NavLink>,
-            style: { height: "60px", lineHeight: "60px", borderRadius: "10px" },
+            label: <NavLink to="/map">Map Management</NavLink>,
           },
           {
             key: "/vehicle",
             icon: <CarOutlined />,
-            label: <NavLink style={{padding:"20px"}} to="/vehicle" className="menu-link">Vehicle Management</NavLink>,
-            style: { height: "60px", lineHeight: "60px", borderRadius: "10px" },
+            label: <NavLink to="/vehicle">Vehicle Management</NavLink>,
           },
           {
             key: "/analyst",
             icon: <BarChartOutlined />,
-            label: <NavLink style={{padding:"20px"}} to="/analyst" className="menu-link">Analyst</NavLink>,
-            style: { height: "60px", lineHeight: "60px", borderRadius: "10px" },
+            label: <NavLink to="/analyst">Analyst</NavLink>,
           },
           {
             key: "/problem",
             icon: <WarningOutlined />,
-            label: <NavLink style={{padding:"20px"}} to="/problem" className="menu-link">Problems</NavLink>,
-            style: { height: "60px", lineHeight: "60px", borderRadius: "10px" },
+            label: <NavLink to="/problem">Problems</NavLink>,
           },
           {
             key: "/roles",
             icon: <UserOutlined />,
-            label: <NavLink style={{padding:"20px"}} to="/roles" className="menu-link">Roles and Permission</NavLink>,
-            style: { height: "60px", lineHeight: "60px", borderRadius: "10px" },
+            label: <NavLink to="/roles">Roles and Permission</NavLink>,
           },
         ]}
       />

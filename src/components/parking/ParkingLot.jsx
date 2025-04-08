@@ -31,7 +31,7 @@ useEffect(() => {
     setDataLoading(true);
     try {
       const response = await getParkingSpots(parkingLotId);
-      const spotData = response;
+      const spotData = response.data;
       
       // Assuming the API returns an array of spots with car data
       // where each spot has an id and possibly a car object
@@ -44,6 +44,8 @@ useEffect(() => {
       });
       
       setParkedCars(carMap);
+      console.log(carMap);
+      
       setError(null);
     } catch (err) {
       setError('Failed to load parking data. Please try again later.');

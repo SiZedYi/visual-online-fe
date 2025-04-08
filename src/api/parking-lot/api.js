@@ -35,7 +35,7 @@ export const getParkingLot = async (id) => {
 export const getParkingSpots = async (parkingLotId) => {
   try {
     const response = await axios.get(`${API_URL}/lots/${parkingLotId}/spots`);
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error('Error fetching parking spots:', error);
     throw error;

@@ -26,6 +26,7 @@ const CarForm = ({ onSubmit, onCancel, isLoading }) => {
       >
         <Select
           placeholder="Select a color"
+          suffixIcon={null}
           options={[
             { value: '#FF5733', label: 'Red' },
             { value: '#33FF57', label: 'Green' },
