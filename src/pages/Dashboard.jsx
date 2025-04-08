@@ -14,27 +14,13 @@ const Dashboard = () => {
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
-    
-    // Show image preview
+  
     const reader = new FileReader();
     reader.onload = (e) => setImagePreview(e.target.result);
     reader.readAsDataURL(file);
-    
+  
     try {
       setIsProcessing(true);
-      
-      // Extract filename to show the user which layout will be used
-      const filename = file.name.toLowerCase();
-      if (filename.includes('map1')) {
-        setLayoutName('map1');
-      } else if (filename.includes('map2')) {
-        setLayoutName('map2');
-      } else if (filename.includes('map3')) {
-        setLayoutName('map3');
-      } else {
-        setLayoutName('default');
-      }
-      
       const layout = await processImageToLayout(file);
       setParkingLayout(layout);
     } catch (error) {
@@ -43,6 +29,7 @@ const Dashboard = () => {
       setIsProcessing(false);
     }
   };
+  
   
   // Function to manually select a layout
   const selectLayout = async (layoutName) => {
