@@ -4,10 +4,11 @@ import { getParkingSpots, saveCarData } from '../../api/parking-lot/api';
 import CarForm from './CarForm';
 import { Button, Card, Typography, Spin, Row, Col, Alert, Modal, Segmented } from 'antd';
 import { processImageToLayout } from '../../services/imageProcessing';
+import TopViewCar from '../canvas/Canvas';
 
 const { Title } = Typography;
 
-const layoutOptions = ['default', 'map1', 'map2', 'map3'];
+const layoutOptions = ['map1', 'map2', 'map3'];
 
 const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
   const [parkedCars, setParkedCars] = useState({});
@@ -20,7 +21,7 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
   const [error, setError] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const containerRef = useRef(null);
-  const [currentLayout, setCurrentLayout] = useState('default');
+  const [currentLayout, setCurrentLayout] = useState('map1');
 
   const carColors = ['#FF5733', '#33FF57', '#3357FF', '#F3FF33', '#FF33F3', '#33FFF3', '#000000', '#FFFFFF'];
 
@@ -132,10 +133,14 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
       <rect x={spot.x} y={spot.y} width={spot.width} height={spot.height} stroke="white" strokeWidth={1} fill="rgba(80,80,80,0.3)" strokeDasharray="5,3" />
       {parkedCars[spot.id] ? (
         <g>
-          <rect x={spot.x + 3} y={spot.y + 5} width={spot.width - 6} height={spot.height - 10} rx={5} fill={parkedCars[spot.id].color || '#888'} />
-          <circle cx={spot.x + 8} cy={spot.y + spot.height - 12} r={3} fill="#FFBF00" />
-          <circle cx={spot.x + spot.width - 8} cy={spot.y + spot.height - 12} r={3} fill="#FFBF00" />
-          <rect x={spot.x + 5} y={spot.y + 10} width={spot.width - 10} height={15} fill="#ddd" fillOpacity={0.5} />
+          {/* Car image  */}
+            <TopViewCar  
+              x={spot.x}
+              y={spot.y}
+              width={spot.width}
+              height={spot.height}
+              color={parkedCars[spot.id].color}/>
+
           {editMode && (
             <foreignObject x={spot.x} y={spot.y + (spot.height / 2) - 15} width={spot.width} height={30}>
               <div xmlns="http://www.w3.org/1999/xhtml" style={{ display: 'flex', justifyContent: 'center' }}>
@@ -167,10 +172,11 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
                   value={currentLayout}
                   onChange={changeLayout}
                   options={layoutOptions.map(option => ({
-                    label: option.toUpperCase(),
+                    label: option === 'map1' ? 'Floor 1'
+                     : option === 'map2' ? 'Floor 2'
+                      : option === 'map3' ? 'Floor 3' : option.toUpperCase(),
                     value: option
                   }))}
-                  style={{ marginBottom: 16 }}
                 />
               </Col>
               <Col>

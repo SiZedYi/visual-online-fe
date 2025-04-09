@@ -180,20 +180,7 @@ export const processImageToLayout = async (imageFile) => {
           // More spots
         ]
       },
-      'default': {
-        width: 1000,
-        height: 600,
-        svgPath: null, // No external SVG for default
-        spots: [
-          { id: '1-0', x: 100, y: 20, width: 30, height: 60 },
-          { id: '1-1', x: 130, y: 20, width: 30, height: 60 },
-          { id: '1-2', x: 160, y: 20, width: 30, height: 60 },
-          { id: '2-0', x: 100, y: 170, width: 30, height: 60 },
-          { id: '2-1', x: 130, y: 170, width: 30, height: 60 },
-          { id: '2-2', x: 160, y: 170, width: 30, height: 60 },
-          // More default spots
-        ]
-      }
+      
     };
     
     return layouts[name] || layouts['default'];

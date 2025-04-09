@@ -76,32 +76,32 @@ const Sidebar = () => {
         items={[
           {
             key: "/",
-            icon: <DashboardOutlined />,
+            icon: <DashboardOutlined style={{ marginRight: 10 }}/>,
             label: <NavLink to="/">Dashboard</NavLink>,
           },
           {
             key: "/map",
-            icon: <CarOutlined />,
+            icon: <CarOutlined style={{ marginRight: 10 }}/>,
             label: <NavLink to="/map">Map Management</NavLink>,
           },
           {
             key: "/vehicle",
-            icon: <CarOutlined />,
+            icon: <CarOutlined style={{ marginRight: 10 }}/>,
             label: <NavLink to="/vehicle">Vehicle Management</NavLink>,
           },
           {
             key: "/analyst",
-            icon: <BarChartOutlined />,
+            icon: <BarChartOutlined style={{ marginRight: 10 }}/>,
             label: <NavLink to="/analyst">Analyst</NavLink>,
           },
           {
             key: "/problem",
-            icon: <WarningOutlined />,
+            icon: <WarningOutlined style={{ marginRight: 10 }}/>,
             label: <NavLink to="/problem">Problems</NavLink>,
           },
           {
             key: "/roles",
-            icon: <UserOutlined />,
+            icon: <UserOutlined style={{ marginRight: 10 }}/>,
             label: <NavLink to="/roles">Roles and Permission</NavLink>,
           },
         ]}
