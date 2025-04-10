@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ConfigProvider } from "antd";
 import Dashboard from "./pages/Dashboard";
 import MapManagement from "./pages/MapManagement";
-// import VehicleManagement from "./pages/VehicleManagement";
+import VehicleManagement from "./pages/VehicleManagement";
 // import Analyst from "./pages/Analyst";
 // import Problems from "./pages/Problems";
 // import Roles from "./pages/Roles";
@@ -34,10 +34,10 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/map" element={<MapManagement />} />
-          {/* <Route path="/vehicles" element={<VehicleManagement />} />
-          <Route path="/analyst" element={<Analyst />} />
-          <Route path="/problems" element={<Problems />} />
-          <Route path="/roles" element={<Roles />} /> */}
+          <Route path="/vehicle" element={<VehicleManagement />} />
+          {/* <Route path="/analyst" element={<Analyst />} /> */}
+          {/* <Route path="/problems" element={<Problems />} /> */}
+          {/* <Route path="/roles" element={<Roles />} /> */}
         </Routes>
       </Router>
 
