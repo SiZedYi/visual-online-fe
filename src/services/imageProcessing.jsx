@@ -11,7 +11,7 @@ export const processImageToLayout = async (imageFile) => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Select layout based on filename
-      let layoutName = 'default';
+      let layoutName = 'map1';
       if (filename.includes('map1')) {
         layoutName = 'map1';
       } else if (filename.includes('map2')) {
@@ -153,8 +153,8 @@ export const processImageToLayout = async (imageFile) => {
         ]
       },
       'map2': {
-        width: 1000,
-        height: 600,
+        width: 1200,
+        height: 800,
         svgPath: '/maps/map2.svg',
         spots: [
           { id: 'C1', x: 200, y: 100, width: 30, height: 60 },
