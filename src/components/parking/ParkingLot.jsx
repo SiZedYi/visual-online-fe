@@ -2,13 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ReactComponent as Logo } from '../../maps/map1.svg';
 import { getParkingSpots, saveCarData } from '../../api/parking-lot/api';
 import CarForm from './CarForm';
+import './index.css';
 import { Button, Card, Typography, Spin, Row, Col, Alert, Modal, Segmented } from 'antd';
 import { processImageToLayout } from '../../services/imageProcessing';
 import TopViewCar from '../canvas/Canvas';
 
 const { Title } = Typography;
 
-const layoutOptions = ['map1', 'map2', 'map3'];
+const layoutOptions = ['floor','map1', 'map2', 'map3'];
 
 const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
   const [parkedCars, setParkedCars] = useState({});
@@ -162,20 +163,21 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
   ));
 
   return (
-    <div style={{ padding: '24px' }}>
+    <main>
       <Row justify="center">
         <Col>
-          <Card style={{ marginBottom: '16px', backgroundColor: '#001529', color: 'white' }}>
+          <Card style={{ marginBottom: '16px',  color: 'white', borderRadius: '20px' }}>
             <Row justify="space-between" align="middle">
               <Col>
                 <Segmented
                   value={currentLayout}
                   onChange={changeLayout}
                   options={layoutOptions.map(option => ({
-                    label: option === 'map1' ? 'Floor 1'
-                     : option === 'map2' ? 'Floor 2'
-                      : option === 'map3' ? 'Floor 3' : option.toUpperCase(),
-                    value: option
+                  label: option === 'floor' ? 'Floor: '
+                    : option === 'map1' ? 'L1'
+                    : option === 'map2' ? 'L2'
+                    : option === 'map3' ? 'L3' : option.toUpperCase(),
+                  value: option
                   }))}
                 />
               </Col>
@@ -228,17 +230,9 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
               />
             </Modal>
           )}
-
-          <Alert
-            message="Instructions"
-            description={editMode ? "Click '+' to place a car in a parking spot. Click 'x' to remove a car. Click 'Done' when finished." : "Click 'Edit' to add or remove cars."}
-            type="info"
-            showIcon
-            style={{ marginTop: '16px' }}
-          />
         </Col>
       </Row>
-    </div>
+    </main>
   );
 };
 

@@ -1,0 +1,16 @@
+.ant-segmented-item {
+  color:#a1a1a1 !important;
+  padding: 10px !important;
+}
+
+.ant-segmented-item:first-child {
+  color:#111 !important;
+  padding: 10px !important;
+}
+
+.ant-segmented-item-selected {
+    background: linear-gradient(to right, #C5C5 0%, #6C5CE7 100%) !important;
+    font-weight: bold !important;
+    color: #111 !important;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px !important;
+  }

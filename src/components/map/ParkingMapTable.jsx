@@ -59,6 +59,8 @@ const ParkingMapTable = ({ data }) => {
   ];
 
   return (
+    <>
+    <h2>Map List</h2>
     <Space direction="vertical" style={{ width: '100%' }}>
       <Input
         placeholder="Search by parking lot name..."
@@ -74,6 +76,7 @@ const ParkingMapTable = ({ data }) => {
         pagination={{ pageSize: 8 }}
       />
     </Space>
+    </>
   );
 };
 
