@@ -32,8 +32,8 @@ export const processImageToLayout = async (imageFile) => {
   const getLayoutByName = (name) => {
     const layouts = {
       'map1': {
-        width: 1200,
-        height: 800,
+        width: 1100,
+        height: 700,
         svgPath: '/maps/map1.svg', // Path to the SVG file
         // Parking spot data structure
         spots: [
@@ -153,8 +153,8 @@ export const processImageToLayout = async (imageFile) => {
         ]
       },
       'map2': {
-        width: 1200,
-        height: 800,
+        width: 1100,
+        height: 700,
         svgPath: '/maps/map2.svg',
         spots: [
           { id: 'C1', x: 200, y: 100, width: 30, height: 60 },
@@ -167,8 +167,8 @@ export const processImageToLayout = async (imageFile) => {
         ]
       },
       'map3': {
-        width: 1200,
-        height: 800,
+        width: 1100,
+        height: 700,
         svgPath: '/maps/map3.svg',
         spots: [
           { id: 'E1', x: 300, y: 200, width: 30, height: 60 },

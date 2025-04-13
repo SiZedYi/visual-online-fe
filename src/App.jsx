@@ -6,8 +6,9 @@ import "antd/dist/reset.css";
 import Dashboard from "./pages/Dashboard";
 import MapManagement from "./pages/MapManagement";
 import VehicleManagement from "./pages/VehicleManagement";
-import AppLayout from "./components/layout/AppLayout"; // thêm dòng này
-
+import AppLayout from "./components/layout/AppLayout";
+import Login from "./pages/Login";
+import PrivateRoute from "./components/auth/PrivateRoute";
 const config = {
   token: {
     fontFamily: "Roboto",
@@ -21,7 +22,12 @@ const App = () => {
     <ConfigProvider theme={config}>
       <Router>
         <Routes>
-          <Route path="/" element={<AppLayout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/"  element={
+              <PrivateRoute>
+                <AppLayout />
+              </PrivateRoute>
+            } >
             <Route index element={<Dashboard />} />
             <Route path="map" element={<MapManagement />} />
             <Route path="vehicle" element={<VehicleManagement />} />

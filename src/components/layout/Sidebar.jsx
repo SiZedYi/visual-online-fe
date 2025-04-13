@@ -35,6 +35,8 @@ const Sidebar = () => {
         position: "relative",
         borderRadius: "20px",
         overflow: "auto",
+        boxShadow:
+          "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
       }}
       trigger={null} // We'll use a custom trigger
     >
@@ -173,9 +175,17 @@ const Sidebar = () => {
 
           {/* Logout Button (1/3) */}
           <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
-          <Button color="danger" variant="solid">
-            Log out
-          </Button>
+            <Button
+              color="danger"
+              variant="solid"
+              onClick={() => {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                window.location.href = "/login"; // Redirect to login
+              }}
+            >
+              Log out
+            </Button>
           </div>
         </div>
       )}
@@ -183,4 +193,4 @@ const Sidebar = () => {
   );
 };
 
-export default React.memo(Sidebar);;
+export default Sidebar;

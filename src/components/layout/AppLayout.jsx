@@ -8,7 +8,7 @@ const AppLayout = () => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sidebar />
-      <Layout style={{ padding: 24, overflow: "auto" }}>
+      <Layout style={{ padding: 24, overflow: "auto", backgroundColor: "#e7e9f6" }}>
         <Outlet />
       </Layout>
     </Layout>

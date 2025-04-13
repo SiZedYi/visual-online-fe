@@ -166,7 +166,8 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
     <main>
       <Row justify="center">
         <Col>
-          <Card style={{ marginBottom: '16px',  color: 'white', borderRadius: '20px' }}>
+          <Card style={{ marginBottom: '16px',  color: 'white', borderRadius: '20px',
+          boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
             <Row justify="space-between" align="middle">
               <Col>
                 <Segmented
