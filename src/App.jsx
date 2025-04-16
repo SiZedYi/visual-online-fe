@@ -8,7 +8,10 @@ import MapManagement from "./pages/MapManagement";
 import VehicleManagement from "./pages/VehicleManagement";
 import AppLayout from "./components/layout/AppLayout";
 import Login from "./pages/Login";
-import PrivateRoute from "./components/auth/PrivateRoute";
+import RevenueStatistics from "./pages/RevenueStatistics";
+import ProblemManagement from "./pages/ProblemManagement";
+import CarManagement from "./pages/CarManagement";
+// import PrivateRoute from "./components/auth/PrivateRoute";
 const config = {
   token: {
     fontFamily: "Roboto",
@@ -23,14 +26,17 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/"  element={
+          <Route /*path="/"  element={
               <PrivateRoute>
                 <AppLayout />
               </PrivateRoute>
-            } >
+            } */>
             <Route index element={<Dashboard />} />
             <Route path="map" element={<MapManagement />} />
             <Route path="vehicle" element={<VehicleManagement />} />
+            <Route path="revenue" element={<RevenueStatistics/>}/> 
+            <Route path="problem" element={<ProblemManagement/>}/> 
+            <Route path="car" element={<CarManagement/>}/> 
             {/* Thêm các route khác nếu có */}
           </Route>
         </Routes>
