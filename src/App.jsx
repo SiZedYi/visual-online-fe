@@ -8,6 +8,9 @@ import MapManagement from "./pages/MapManagement";
 import VehicleManagement from "./pages/VehicleManagement";
 import AppLayout from "./components/layout/AppLayout";
 import Login from "./pages/Login";
+import RevenueStatistics from "./pages/RevenueStatistics";
+import ProblemManagement from "./pages/ProblemManagement";
+import CarManagement from "./pages/CarManagement";
 import PrivateRoute from "./components/auth/PrivateRoute";
 const config = {
   token: {
@@ -31,6 +34,9 @@ const App = () => {
             <Route index element={<Dashboard />} />
             <Route path="map" element={<MapManagement />} />
             <Route path="vehicle" element={<VehicleManagement />} />
+            <Route path="revenue" element={<RevenueStatistics/>}/> 
+            <Route path="problem" element={<ProblemManagement/>}/> 
+            <Route path="car" element={<CarManagement/>}/> 
             {/* Thêm các route khác nếu có */}
           </Route>
         </Routes>
