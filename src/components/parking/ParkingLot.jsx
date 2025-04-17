@@ -90,8 +90,6 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
       color: carColors[Math.floor(Math.random() * carColors.length)],
       model: 'Unknown',
       licensePlate: '',
-      owner: { name: 'Leon', contactInfo: 'abc' },
-      entryTime: new Date().toISOString(),
       ...carData
     };
     try {

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Form, Input, Button, message } from "antd";
+import { Form, Input, Button, message, Typography } from "antd";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
+const { Text } = Typography;
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -13,9 +15,9 @@ const Login = () => {
       const response = await axios.post("http://localhost:5000/api/auth/login", values);
       if (response.data.success) {
         message.success(response.data.message);
-        localStorage.setItem("token", response.data.token); // Save token to localStorage
-        localStorage.setItem("user", JSON.stringify(response.data.user)); // Save user info
-        navigate("/"); // Redirect to the dashboard
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        navigate("/");
       } else {
         message.error("Login failed. Please check your credentials.");
       }
@@ -27,29 +29,51 @@ const Login = () => {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: "50px auto", padding: 20, border: "1px solid #ddd", borderRadius: 10 }}>
-      <h2 style={{ textAlign: "center" }}>Login</h2>
-      <Form layout="vertical" onFinish={handleLogin}>
-        <Form.Item
-          label="Username"
-          name="username"
-          rules={[{ required: true, message: "Please enter your username!" }]}
-        >
-          <Input placeholder="Enter your username" />
-        </Form.Item>
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[{ required: true, message: "Please enter your password!" }]}
-        >
-          <Input.Password placeholder="Enter your password" />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading} block>
-            Login
-          </Button>
-        </Form.Item>
-      </Form>
+    <div
+      style={{
+        height: "100vh",
+        backgroundColor: "#e7e9f6", // Ant Design primary color
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 400,
+          width: "100%",
+          backgroundColor: "#fff",
+          padding: 30,
+          borderRadius: 12,
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <h2 style={{ textAlign: "center" }}>Login</h2>
+        <Form layout="vertical" onFinish={handleLogin}>
+          <Form.Item
+            label="Username"
+            name="username"
+            rules={[{ required: true, message: "Please enter your username!" }]}
+          >
+            <Input placeholder="Enter your username" style={{ padding: "10px" }} />
+          </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: "Please enter your password!" }]}
+          >
+            <Input.Password placeholder="Enter your password" style={{ padding: "10px" }} />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" loading={loading} block>
+              Login
+            </Button>
+          </Form.Item>
+        </Form>
+        <div style={{ textAlign: "center", marginTop: 16 }}>
+          <Text>Don't have an account? <Link style={{color: "#6c5ce7"}} to="/register">Sign up now</Link></Text>
+        </div>
+      </div>
     </div>
   );
 };

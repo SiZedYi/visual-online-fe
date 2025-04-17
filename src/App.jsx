@@ -8,10 +8,12 @@ import MapManagement from "./pages/MapManagement";
 import VehicleManagement from "./pages/VehicleManagement";
 import AppLayout from "./components/layout/AppLayout";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import RevenueStatistics from "./pages/RevenueStatistics";
 import ProblemManagement from "./pages/ProblemManagement";
 import CarManagement from "./pages/CarManagement";
 import PrivateRoute from "./components/auth/PrivateRoute";
+import PublicRoute from "./components/auth/PublicRoute";
 const config = {
   token: {
     fontFamily: "Roboto",
@@ -25,19 +27,41 @@ const App = () => {
     <ConfigProvider theme={config}>
       <Router>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/"  element={
+          {/* Public route - redirect to "/" if already logged in */}
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
+
+          {/* Private routes - redirect to "/login" if not logged in */}
+          <Route
+            path="/"
+            element={
               <PrivateRoute>
                 <AppLayout />
               </PrivateRoute>
-            } >
+            }
+          >
             <Route index element={<Dashboard />} />
             <Route path="map" element={<MapManagement />} />
             <Route path="vehicle" element={<VehicleManagement />} />
-            <Route path="revenue" element={<RevenueStatistics/>}/> 
-            <Route path="problem" element={<ProblemManagement/>}/> 
-            <Route path="car" element={<CarManagement/>}/> 
-            {/* Thêm các route khác nếu có */}
+            <Route path="revenue" element={<RevenueStatistics />} />
+            <Route path="problem" element={<ProblemManagement />} />
+            <Route path="car" element={<CarManagement />} />
+            {/* Add more protected routes as needed */}
           </Route>
         </Routes>
       </Router>

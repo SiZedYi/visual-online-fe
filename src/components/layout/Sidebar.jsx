@@ -18,7 +18,12 @@ const { Sider } = Layout;
 const Sidebar = () => {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
-
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user")) || {
+      fullName: "Guest",
+      role: "guest",
+    }
+  );
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
@@ -103,20 +108,20 @@ const Sidebar = () => {
             style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
           },
           {
-            key: "/vehicle",
+            key: "/car",
             icon: <CarOutlined style={{ marginRight: 10 }} />,
             label: (
-              <NavLink style={{ padding: "20px" }} to="/vehicle" replace>
+              <NavLink style={{ padding: "20px" }} to="/car" replace>
                 Vehicle Management
               </NavLink>
             ),
             style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
           },
           {
-            key: "/analyst",
+            key: "/revenue",
             icon: <BarChartOutlined style={{ marginRight: 10 }} />,
             label: (
-              <NavLink style={{ padding: "20px" }} to="/analyst" replace>
+              <NavLink style={{ padding: "20px" }} to="/revenue" replace>
                 Analyst
               </NavLink>
             ),
@@ -168,7 +173,7 @@ const Sidebar = () => {
               src="https://api.dicebear.com/7.x/personas/svg?seed=User"
             />
             <div>
-              <div style={{ fontWeight: 600 }}>sizedyi</div>
+              <div style={{ fontWeight: 600 }}>{user.username}</div>
               <div style={{ fontSize: 12, color: "#888" }}>User</div>
             </div>
           </div>
