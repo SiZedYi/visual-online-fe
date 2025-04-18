@@ -1,9 +1,8 @@
 import React from "react";
 import { Table, Button } from "antd";
 import dayjs from "dayjs";
-import CarItem from "./CarItem";
 
-const CarTable = ({ data, onEdit }) => {
+const CarTable = ({ data, onEdit, loading }) => {
   const columns = [
     {
       title: "License Plate",
@@ -20,7 +19,7 @@ const CarTable = ({ data, onEdit }) => {
     {
       title: "Owner",
       dataIndex: "ownerInfo",
-      render: (owner) => owner.name,
+      render: (owner) => owner?.name || "N/A",
     },
     {
       title: "Current Spot",
@@ -30,7 +29,8 @@ const CarTable = ({ data, onEdit }) => {
     {
       title: "Entry Time",
       dataIndex: "entryTime",
-      render: (entryTime) => (entryTime ? dayjs(entryTime).format("HH:mm DD/MM/YYYY") : "Not entered"),
+      render: (entryTime) =>
+        entryTime ? dayjs(entryTime).format("HH:mm DD/MM/YYYY") : "Not entered",
     },
     {
       title: "Actions",
@@ -42,7 +42,7 @@ const CarTable = ({ data, onEdit }) => {
     },
   ];
 
-  return <Table columns={columns} dataSource={data} rowKey="id" />;
+  return <Table columns={columns} dataSource={data} loading={loading} rowKey="id" />;
 };
 
 export default CarTable;

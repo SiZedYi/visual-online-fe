@@ -43,7 +43,7 @@ const CarForm = ({ onSubmit, onCancel, isLoading }) => {
         name="model"
         rules={[{ required: true, message: 'Please enter the car model!' }]}
       >
-        <Input placeholder="Car model" />
+        <Input placeholder="Car model" style={{ padding: "8px 12px" }}/>
       </Form.Item>
 
       <Form.Item
@@ -51,7 +51,7 @@ const CarForm = ({ onSubmit, onCancel, isLoading }) => {
         name="licensePlate"
         rules={[{ required: true, message: 'Please enter the license plate!' }]}
       >
-        <Input placeholder="ABC123" />
+        <Input placeholder="ABC123" style={{ padding: "8px 12px" }}/>
       </Form.Item>
 
       <Form.Item>

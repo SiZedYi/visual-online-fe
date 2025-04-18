@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react"; // <-- thêm useEffect
-import { Form, Input, Button, message, Typography } from "antd";
+import React, { useState, useEffect } from "react";
+import { Form, Input, Button, message, Typography, Row, Col, Image } from "antd";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -23,10 +23,9 @@ const Register = () => {
       const response = await axios.post("http://localhost:5000/api/auth/register", values);
       if (response.data.success) {
         message.success(response.data.message);
-        // 🔐 Save token and user
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        navigate("/"); // 🚀 Redirect to home or dashboard
+        navigate("/");
       } else {
         message.error("Registration failed. Please try again.");
       }
@@ -36,7 +35,6 @@ const Register = () => {
       setLoading(false);
     }
   };
-  
 
   return (
     <div
@@ -46,68 +44,102 @@ const Register = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        padding: 20,
       }}
     >
-      <div
+      <Row
         style={{
-          maxWidth: 500,
           width: "100%",
+          maxWidth: 900,
           backgroundColor: "#fff",
-          padding: 30,
-          borderRadius: 12,
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          borderRadius: 20,
+          overflow: "hidden",
+          boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
         }}
       >
-        <h2 style={{ textAlign: "center" }}>Register</h2>
-        <Form layout="vertical" onFinish={handleRegister}>
-          <Form.Item
-            label="Username"
-            name="username"
-            rules={[{ required: true, message: "Please enter your username!" }]}
+        {/* Left - Form */}
+        <Col xs={24} md={12}>
+          <div
+            style={{
+              height: "100%",
+              padding: 40,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
           >
-            <Input placeholder="Enter your username" style={{ padding: "10px" }} />
-          </Form.Item>
-          <Form.Item
-            label="Full Name"
-            name="fullName"
-            rules={[{ required: true, message: "Please enter your full name!" }]}
-          >
-            <Input placeholder="Enter your full name" style={{ padding: "10px" }} />
-          </Form.Item>
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-              { required: true, message: "Please enter your email!" },
-              { type: "email", message: "Please enter a valid email!" },
-            ]}
-          >
-            <Input placeholder="Enter your email" style={{ padding: "10px" }} />
-          </Form.Item>
-          <Form.Item
-            label="Phone Number"
-            name="phoneNumber"
-            rules={[{ required: true, message: "Please enter your phone number!" }]}
-          >
-            <Input placeholder="Enter your phone number" style={{ padding: "10px" }} />
-          </Form.Item>
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: "Please enter your password!" }]}
-          >
-            <Input.Password placeholder="Enter your password" style={{ padding: "10px" }} />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading} block>
-              Register
-            </Button>
-          </Form.Item>
-        </Form>
-        <div style={{ textAlign: "center", marginTop: 16 }}>
-          <Text>Already have an account? <Link style={{color: "#6c5ce7"}} to="/login">Login now</Link></Text>
-        </div>
-      </div>
+            <h2 style={{ textAlign: "center", marginBottom: 30 }}>Register</h2>
+            <Form layout="vertical" onFinish={handleRegister}>
+              <Form.Item
+                label="Username"
+                name="username"
+                rules={[{ required: true, message: "Please enter your username!" }]}
+              >
+                <Input placeholder="Enter your username" style={{ padding: "10px" }} />
+              </Form.Item>
+              <Form.Item
+                label="Full Name"
+                name="fullName"
+                rules={[{ required: true, message: "Please enter your full name!" }]}
+              >
+                <Input placeholder="Enter your full name" style={{ padding: "10px" }} />
+              </Form.Item>
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[
+                  { required: true, message: "Please enter your email!" },
+                  { type: "email", message: "Please enter a valid email!" },
+                ]}
+              >
+                <Input placeholder="Enter your email" style={{ padding: "10px" }} />
+              </Form.Item>
+              <Form.Item
+                label="Phone Number"
+                name="phoneNumber"
+                rules={[{ required: true, message: "Please enter your phone number!" }]}
+              >
+                <Input placeholder="Enter your phone number" style={{ padding: "10px" }} />
+              </Form.Item>
+              <Form.Item
+                label="Password"
+                name="password"
+                rules={[{ required: true, message: "Please enter your password!" }]}
+              >
+                <Input.Password placeholder="Enter your password" style={{ padding: "10px" }} />
+              </Form.Item>
+              <Form.Item>
+                <Button type="primary" htmlType="submit" loading={loading} block>
+                  Register
+                </Button>
+              </Form.Item>
+            </Form>
+            <div style={{ textAlign: "center", marginTop: 16 }}>
+              <Text>
+                Already have an account?{" "}
+                <Link style={{ color: "#6c5ce7" }} to="/login">
+                  Login now
+                </Link>
+              </Text>
+            </div>
+          </div>
+        </Col>
+
+        {/* Right - Image */}
+        <Col xs={0} md={12}>
+        <div style={{ flex: 1, height: "100%" }}>
+      <img
+        src="https://images.cars.com/cldstatic/wp-content/uploads/202406-data-insights-insurance-reduced.gif"
+        alt="Login"
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+        }}
+      />
+    </div>
+        </Col>
+      </Row>
     </div>
   );
 };

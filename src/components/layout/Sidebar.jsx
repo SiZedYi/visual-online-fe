@@ -173,7 +173,7 @@ const Sidebar = () => {
               src="https://api.dicebear.com/7.x/personas/svg?seed=User"
             />
             <div>
-              <div style={{ fontWeight: 600 }}>{user.username}</div>
+              <div style={{ fontWeight: 600 }}>{user.fullName}</div>
               <div style={{ fontSize: 12, color: "#888" }}>User</div>
             </div>
           </div>

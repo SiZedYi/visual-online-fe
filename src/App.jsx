@@ -5,7 +5,6 @@ import { ConfigProvider } from "antd";
 import "antd/dist/reset.css";
 import Dashboard from "./pages/Dashboard";
 import MapManagement from "./pages/MapManagement";
-import VehicleManagement from "./pages/VehicleManagement";
 import AppLayout from "./components/layout/AppLayout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -57,7 +56,6 @@ const App = () => {
           >
             <Route index element={<Dashboard />} />
             <Route path="map" element={<MapManagement />} />
-            <Route path="vehicle" element={<VehicleManagement />} />
             <Route path="revenue" element={<RevenueStatistics />} />
             <Route path="problem" element={<ProblemManagement />} />
             <Route path="car" element={<CarManagement />} />

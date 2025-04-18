@@ -9,7 +9,7 @@ const CarForm = ({ onFinish, form, editing }) => {
         label="License Plate"
         rules={[{ required: true, message: "Please input the license plate!" }]}
       >
-        <Input />
+        <Input placeholder="License Plate" style={{ padding: "8px 12px" }}/>
       </Form.Item>
 
       <Form.Item
@@ -17,7 +17,18 @@ const CarForm = ({ onFinish, form, editing }) => {
         label="Color"
         rules={[{ required: true, message: "Please input the color!" }]}
       >
-        <Input />
+        <Select
+                  placeholder="Select a color"
+                  suffixIcon={null}
+                  options={[
+                    { value: '#FF5733', label: 'Red' },
+                    { value: '#33FF57', label: 'Green' },
+                    { value: '#3357FF', label: 'Blue' },
+                    { value: '#FFD700', label: 'Yellow' },
+                    { value: '#000000', label: 'Black' },
+                    { value: '#FFFFFF', label: 'White' }
+                  ]}
+                />
       </Form.Item>
 
       <Form.Item
@@ -25,39 +36,7 @@ const CarForm = ({ onFinish, form, editing }) => {
         label="Model"
         rules={[{ required: true, message: "Please input the model!" }]}
       >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        name="ownerInfo.name"
-        label="Owner Name"
-        rules={[{ required: true, message: "Please input the owner's name!" }]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        name="ownerInfo.contactInfo"
-        label="Owner Contact Info"
-        rules={[{ required: true, message: "Please input the owner's contact!" }]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item name="entryTime" label="Entry Time">
-        <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
-      </Form.Item>
-
-      <Form.Item
-        name="currentSpot"
-        label="Current Spot"
-      >
-        <Select>
-          <Select.Option value="A1">A1</Select.Option>
-          <Select.Option value="A2">A2</Select.Option>
-          <Select.Option value="A3">A3</Select.Option>
-          <Select.Option value="A4">A4</Select.Option>
-        </Select>
+        <Input placeholder="Model" style={{ padding: "8px 12px" }}/>
       </Form.Item>
 
       <Form.Item>

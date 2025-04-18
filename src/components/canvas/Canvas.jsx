@@ -1,8 +1,11 @@
 import React from 'react';
 
-const TopViewCar = ({ x, y, width, height, color = '#888' }) => {
+const TopViewCar = ({ x, y, width, height, onClick, color = '#888' }) => {
   return (
-    <g>
+    <g
+    onClick={onClick} 
+      style={{ cursor: onClick ? 'pointer' : 'default' }}
+    >
       {/* Thân xe */}
       <rect 
         x={x + 3} 

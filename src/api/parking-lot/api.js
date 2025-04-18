@@ -39,7 +39,7 @@ export const saveCarData = async (carData) => {
 // Get parking lot data
 export const getParkingLot = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/parking/parking/lots/${id}`);
+    const response = await axios.get(`${API_URL}/parking/lots/${id}`);
     return response.data.data;
   } catch (error) {
     console.error("Error fetching parking lot:", error);
@@ -97,4 +97,30 @@ export const createParkingSpot = async (parkingLotId, spotData) => {
     console.error("Error creating parking spot:", error);
     throw error;
   }
+};
+
+export const fetchCars = async () => {
+  const response = await axios.get(`${API_URL}/cars`,
+    {
+      headers: getAuthHeader(),
+    });
+  return response.data; // giả sử API trả về { success: true, data: [...] }
+};
+
+// POST new car
+export const createCar = async (carData) => {
+  const res = await axios.post(`${API_URL}/cars`, carData,
+    {
+      headers: getAuthHeader(),
+    });
+  return res.data;
+};
+
+// get Car Detail
+export const getCarDetail = async (carId) => {
+  const res = await axios.get(`${API_URL}/cars/${carId}`,
+    {
+      headers: getAuthHeader(),
+    });
+  return res.data;
 };
