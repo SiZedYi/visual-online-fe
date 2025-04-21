@@ -1,3 +1,4 @@
+// MapForm.jsx
 import React from "react";
 import { Form, Input, InputNumber, Button, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
@@ -11,38 +12,30 @@ const MapForm = ({ onFinish, form, editing }) => {
       initialValues={editing}
     >
       <Form.Item name="name" label="Name" rules={[{ required: true }]}>
-        <Input style={{ padding: "8px 12px" }} />
+        <Input />
       </Form.Item>
 
       <Form.Item name="width" label="Width" rules={[{ required: true }]}>
-        <InputNumber
-          min={100}
-          style={{ width: "100%", height: 40, padding: "8px 12px" }}
-        />
+        <InputNumber min={100} style={{ width: "100%" }} />
       </Form.Item>
 
       <Form.Item name="height" label="Height" rules={[{ required: true }]}>
-        <InputNumber
-          min={100}
-          style={{ width: "100%", height: 40, padding: "8px 12px" }}
-        />
+        <InputNumber min={100} style={{ width: "100%" }} />
       </Form.Item>
 
       <Form.Item name="description" label="Description">
-        <Input.TextArea style={{ padding: "8px 12px" }} rows={4} />
+        <Input.TextArea rows={4} />
       </Form.Item>
 
       <Form.Item name="svgPath" label="Upload Map Image">
         <Upload beforeUpload={() => false} maxCount={1}>
-          <Button icon={<UploadOutlined />} style={{ padding: "8px 12px" }}>
-            Click to Upload
-          </Button>
+          <Button icon={<UploadOutlined />}>Click to Upload</Button>
         </Upload>
       </Form.Item>
 
       <Form.Item>
         <Button type="primary" htmlType="submit">
-          Save Map
+          {editing ? "Update Car" : "Add Car"}
         </Button>
       </Form.Item>
     </Form>

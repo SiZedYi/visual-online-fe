@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ReactComponent as Logo } from "../../maps/map1.svg";
 import {
   getCarDetail,
   getParkingSpots,
@@ -7,18 +6,7 @@ import {
 } from "../../api/parking-lot/api";
 import CarForm from "./CarForm";
 import "./index.css";
-import {
-  Button,
-  Card,
-  Typography,
-  Spin,
-  Row,
-  Col,
-  Alert,
-  Modal,
-  Segmented,
-  Popover,
-} from "antd";
+import {Button,Card,Typography,Spin,Row,Col, Alert, Modal, Segmented, } from "antd";
 import { processImageToLayout } from "../../services/imageProcessing";
 import TopViewCar from "../canvas/Canvas";
 import axios from "axios";
@@ -60,6 +48,7 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
   const [selectedCar, setSelectedCar] = useState(null);
   const [carDetailsLoading, setCarDetailsLoading] = useState(false);
   const [carDetails, setCarDetails] = useState(null);
+  const [DynamicSVG, setDynamicSVG] = useState(null);
 
   const carColors = [
     "#FF5733",
@@ -71,6 +60,12 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
     "#000000",
     "#FFFFFF",
   ];
+
+  useEffect(() => {
+    import(`../../maps/map1.svg`).then((module) =>
+      setDynamicSVG(() => module.ReactComponent)
+    );
+  }, []);
 
   useEffect(() => {
     const fetchParkingData = async () => {
@@ -161,6 +156,12 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
         type: "image/jpeg",
       });
       const layoutData = await processImageToLayout(mockFile);
+      console.log(layoutData);
+
+      // Import SVG tương ứng
+      const svgModule = await import(`../../maps/${layoutName}.svg`);
+      setDynamicSVG(() => svgModule.ReactComponent); // Lưu component SVG
+
       setLayout(layoutData);
     } catch (err) {
       setError("Failed to load layout.");
@@ -246,7 +247,8 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
     return (
       <div className="car-details-bubble">
         <p>
-          <strong>Current Spot:</strong> {carDetails.currentSpot || "Unknown"}
+          <strong>Current Spot:</strong>{" "}
+          {carDetails.currentSpot.spotId || "Unknown"}
         </p>
         <p>
           <strong>License:</strong> {carDetails.licensePlate || "Unknown"}
@@ -467,8 +469,8 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
                   zIndex: 1,
                 }}
               >
-                {svgContent && (
-                  <Logo
+                {DynamicSVG && (
+                  <DynamicSVG
                     viewBox={`0 0 ${layout.width} ${layout.height}`}
                     style={{
                       width: layout.width,

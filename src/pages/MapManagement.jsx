@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Row, Col, Layout, message, Form, Button, Drawer } from "antd";
+import React, { useEffect, useState } from "react";
+import { Layout, message, Form, Button, Drawer } from "antd";
+import axios from "axios";
 import MapForm from "../components/map/MapForm";
 import ParkingMapTable from "../components/map/ParkingMapTable";
 
@@ -8,63 +9,124 @@ const { Content } = Layout;
 const MapManagement = () => {
   const [form] = Form.useForm();
   const [editing, setEditing] = useState(null);
-  const [drawerVisible, setDrawerVisible] = useState(false); // State for Drawer visibility
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [parkingData, setParkingData] = useState([]);
 
-  const [parkingData, setParkingData] = useState([
-    { id: 1, name: "Floor 1", width: 200, height: 300, description: "Zone A", svgPath: "/maps/map1.svg" },
-    { id: 2, name: "Floor 2", width: 150, height: 250, description: "Zone B", svgPath: "/maps/map1.svg" },
-    { id: 3, name: "Floor 3", width: 150, height: 250, description: "Zone B" },
-  ]);
+  // Load data from backend
+  const fetchParkingMaps = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/parking/lots?noSpot=true");
+      if (res.data.success) {
+        setParkingData(res.data.data);
+      } else {
+        message.error("Failed to fetch maps.");
+      }
+    } catch (err) {
+      message.error("Failed to load map data.");
+    }
+  };
+
+  useEffect(() => {
+    fetchParkingMaps();
+  }, []);
 
   const handleEdit = (record) => {
     setEditing(record);
     form.setFieldsValue(record);
-    setDrawerVisible(true); // Open the Drawer when editing
+    setDrawerVisible(true);
   };
 
-  const onFinish = (values) => {
-    if (editing) {
-      setParkingData((prev) =>
-        prev.map((item) =>
-          item.id === editing.id ? { ...item, ...values } : item
-        )
-      );
-      message.success("Updated successfully!");
-    } else {
-      const newItem = {
-        ...values,
-        id: Date.now(),
-      };
-      setParkingData((prev) => [...prev, newItem]);
-      message.success("Created successfully!");
+  const onToggleActive = async (id, isActive) => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/parking/lots/set-active", {
+        id,
+        isActive,
+      });
+      
+      if (res.data.success) {
+        message.success("Status updated successfully.");
+        fetchParkingMaps();
+      } else {
+        message.error("Could not update status.");
+      }
+    } catch (err) {
+      message.error(err.response?.data?.message || "Error updating status.");
     }
+  };
+  
+  const onDelete = async (id) => {
+    try {
+      const res = await axios.delete(`http://localhost:5000/api/map/delete`, {
+        data: { id },
+      });
+  
+      if (res.data.success) {
+        message.success("Map deleted successfully!");
+        fetchParkingMaps();
+      } else {
+        message.error("Failed to delete map.");
+      }
+    } catch (error) {
+      message.error("Error while deleting map.");
+    }
+  };
+  
+  const onFinish = async (values) => {
+    const formData = new FormData();
+    for (let key in values) {
+      if (key === "svgPath" && values.svgPath?.file) {
+        formData.append("svg", values.svgPath.file);
+      } else {
+        formData.append(key, values[key]);
+      }
+    }
+  
+    try {
+      if (editing) {
+        formData.append("_id", editing._id);
+        await axios.post("http://localhost:3000/api/map/update", formData);
+        message.success("Map updated successfully!");
+      } else {
+        await axios.post("http://localhost:3000/api/map", formData);
+        message.success("Map added successfully!");
+      }
+      fetchParkingMaps();
+    } catch (error) {
+      message.error("Error submitting form.");
+    }
+  
     setEditing(null);
     form.resetFields();
-    setDrawerVisible(false); // Close the Drawer after submission
+    setDrawerVisible(false);
   };
 
   return (
     <Content style={{ background: "#fff", padding: 20, borderRadius: 20 }}>
-          <ParkingMapTable data={parkingData} onEdit={handleEdit} />
-          <Button
-            type="primary"
-            onClick={() => {
-              setEditing(null); // Reset editing state
-              form.resetFields(); // Clear the form
-              setDrawerVisible(true); // Open the Drawer
-            }}
-          >
-            Add New Map
-          </Button>
+      <ParkingMapTable
+        data={parkingData}
+        onEdit={handleEdit}
+        onToggleActive={onToggleActive}
+        onDelete={onDelete}
+      />
+      <Button
+        type="primary"
+        onClick={() => {
+          setEditing(null);
+          form.resetFields();
+          setDrawerVisible(true);
+        }}
+      >
+        Add New Map
+      </Button>
 
-      {/* Drawer for MapForm */}
       <Drawer
         title={editing ? "Edit Map" : "Add New Map"}
         width={400}
         onClose={() => setDrawerVisible(false)}
-        visible={drawerVisible}
+        open={drawerVisible}
         destroyOnClose
       >
+        {/* Assuming MapForm is defined elsewhere */}
         <MapForm onFinish={onFinish} form={form} editing={editing} />
       </Drawer>
     </Content>
