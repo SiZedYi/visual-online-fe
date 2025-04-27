@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Table, Input, Space, Image, Button, Popconfirm } from 'antd';
+import { Table, Input, Space, Image, Button, Popconfirm, Switch } from 'antd';
 import { SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
-const ParkingMapTable = ({ data, onEdit, onDelete }) => {
+
+const ParkingMapTable = ({ data, onEdit, onToggleActive, onDelete }) => {
   const [searchText, setSearchText] = useState('');
 
   const handleSearch = (e) => {
@@ -26,24 +27,28 @@ const ParkingMapTable = ({ data, onEdit, onDelete }) => {
       dataIndex: 'description',
       key: 'description',
       render: (text) => text || '—',
+      width: 300,
       ellipsis: true, // Truncate long content with ellipses
     },
     {
       title: 'Width (px)',
       dataIndex: 'width',
       key: 'width',
+      width: 150, // chỉ cần vừa đủ
       sorter: (a, b) => a.width - b.width,
     },
     {
       title: 'Height (px)',
       dataIndex: 'height',
       key: 'height',
+      width: 150, // chỉ cần vừa đủ
       sorter: (a, b) => a.height - b.height,
     },
     {
       title: 'View Map',
       dataIndex: 'svgPath',
       key: 'svgPath',
+      width: 180, // chỉ cần vừa đủ
       render: (svgPath) =>
         svgPath ? (
           <Image
@@ -59,6 +64,20 @@ const ParkingMapTable = ({ data, onEdit, onDelete }) => {
         ),
     },
     {
+      title: "Active",
+      dataIndex: "isActive",
+      key: "isActive",
+      width: 90,
+    align: "center",
+      render: (_, record) => (
+        <Switch
+          checked={record.isActive}
+          onChange={() => onToggleActive(record._id, !record.isActive)}
+          size="small"
+        />
+      ),
+    },
+    {
       title: 'Actions',
       key: 'actions',
       render: (_, record) => (
@@ -72,7 +91,7 @@ const ParkingMapTable = ({ data, onEdit, onDelete }) => {
           </Button>
           <Popconfirm
             title="Are you sure to delete this map?"
-            onConfirm={() => onDelete(record)}
+            onConfirm={() => onDelete(record._id)}
             okText="Yes"
             cancelText="No"
           >
@@ -99,7 +118,7 @@ const ParkingMapTable = ({ data, onEdit, onDelete }) => {
         <Table
           columns={columns}
           dataSource={filteredData}
-          rowKey={(record) => record.id || record.name}
+          rowKey={(record) => record._id || record.id || record.name}
           pagination={{ pageSize: 8 }}
         />
       </Space>
