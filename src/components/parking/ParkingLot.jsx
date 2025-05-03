@@ -6,10 +6,21 @@ import {
 } from "../../api/parking-lot/api";
 import CarForm from "./CarForm";
 import "./index.css";
-import {Button,Card,Typography,Spin,Row,Col, Alert, Modal, Segmented, } from "antd";
+import {
+  Button,
+  Card,
+  Typography,
+  Spin,
+  Row,
+  Col,
+  Alert,
+  Modal,
+  Segmented,
+} from "antd";
 import { processImageToLayout } from "../../services/imageProcessing";
 import TopViewCar from "../canvas/Canvas";
 import axios from "axios";
+import CarDetail from "./CarDetail";
 
 const { Title, Text } = Typography;
 
@@ -137,7 +148,7 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
     const car = parkedCars[spotId];
     if (car) {
       if (selectedCar === spotId) {
-        // If clicking the same car, close the popup
+        // If clicking the same car, close the modal
         setSelectedCar(null);
         setCarDetails(null);
       } else {
@@ -236,36 +247,27 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
 
   // Car details popup content
   const renderCarDetails = () => {
-    if (carDetailsLoading) {
-      return <Spin tip="Loading car details..." />;
-    }
-
-    if (!carDetails) {
-      return <Text>No details available</Text>;
-    }
-
     return (
-      <div className="car-details-bubble">
-        <p>
-          <strong>Current Spot:</strong>{" "}
-          {carDetails.currentSpot.spotId || "Unknown"}
-        </p>
-        <p>
-          <strong>License:</strong> {carDetails.licensePlate || "Unknown"}
-        </p>
-        <p>
-          <strong>Model:</strong> {carDetails.model || "Unknown"}
-        </p>
-        <p>
-          <strong>Owner:</strong> {carDetails.ownerUser || "Unknown"}
-        </p>
-        <p>
-          <strong>Contact:</strong> {carDetails.ownerInfo || "Unknown"}
-        </p>
-        <p>
-          <strong>Apartment:</strong> {carDetails.apartment || "Unknown"}
-        </p>
-      </div>
+      <Modal
+        header={null}
+        closable={false}
+        centered
+        width={1000}
+        open={!!selectedCar}
+        onCancel={() => {
+          setSelectedCar(null);
+          setCarDetails(null);
+        }}
+        footer={null}
+      >
+        {carDetailsLoading ? (
+          <Spin tip="Loading car details..." />
+        ) : carDetails ? (
+          <CarDetail carDetails={carDetails} />
+        ) : (
+          <Text>No details available</Text>
+        )}
+      </Modal>
     );
   };
 
@@ -320,33 +322,7 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
                   width={180}
                   height={150}
                 >
-                  <div
-                    xmlns="http://www.w3.org/1999/xhtml"
-                    style={{
-                      backgroundColor: "white",
-                      border: "1px solid #d9d9d9",
-                      borderRadius: "8px",
-                      padding: "8px",
-                      boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                      fontSize: "12px",
-                      position: "relative",
-                    }}
-                  >
-                    {/* Triangle pointer */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        left: "-10px",
-                        top: "20px",
-                        width: "0",
-                        height: "0",
-                        borderTop: "8px solid transparent",
-                        borderBottom: "8px solid transparent",
-                        borderRight: "10px solid white",
-                      }}
-                    />
-                    {renderCarDetails()}
-                  </div>
+                  {renderCarDetails()}
                 </foreignObject>
               )}
 

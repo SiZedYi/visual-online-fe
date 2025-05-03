@@ -124,3 +124,62 @@ export const getCarDetail = async (carId) => {
     });
   return res.data;
 };
+
+// Thêm hàm saveSpotData vào file api.js hiện có
+
+/**
+ * Lưu thông tin ô đỗ xe xuống database
+ * @param {Object} params - Các thông số của ô đỗ xe
+ * @param {string} params.spotId - ID của ô đỗ xe
+ * @param {number} params.x - Tọa độ x của ô đỗ
+ * @param {number} params.y - Tọa độ y của ô đỗ
+ * @param {number} params.width - Chiều rộng của ô đỗ (chỉ cần cho ô mới)
+ * @param {number} params.height - Chiều cao của ô đỗ (chỉ cần cho ô mới)
+ * @param {string} params.parkingLotId - ID của bãi đỗ xe
+ * @param {boolean} params.delete - Nếu true, sẽ xóa ô đỗ
+ * @returns {Promise<Object>} Dữ liệu trả về từ server
+ */
+export const saveSpotData = async ({
+  spotId,
+  x,
+  y,
+  width,
+  height,
+  parkingLotId,
+  delete: isDelete,
+}) => {
+  try {
+    let endpoint = `/api/parking-lots/${parkingLotId}/spots/${spotId}`;
+    let method = 'PUT';
+    let data = { x, y };
+    
+    // Nếu có chiều rộng và chiều cao, thêm vào data
+    if (width !== undefined && height !== undefined) {
+      data.width = width;
+      data.height = height;
+    }
+    
+    // Nếu là lệnh xóa, thay đổi method thành DELETE
+    if (isDelete) {
+      method = 'DELETE';
+      data = null;
+    }
+    
+    const response = await fetch(endpoint, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: data ? JSON.stringify(data) : null,
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error saving spot data:', error);
+    throw error;
+  }
+};
