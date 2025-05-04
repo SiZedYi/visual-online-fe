@@ -3,6 +3,7 @@ import {
   getCarDetail,
   getParkingSpots,
   saveCarData,
+  saveNewSpot,
 } from "../../api/parking-lot/api";
 import CarForm from "./CarForm";
 import "./index.css";
@@ -19,7 +20,6 @@ import {
 } from "antd";
 import { processImageToLayout } from "../../services/imageProcessing";
 import TopViewCar from "../canvas/Canvas";
-import axios from "axios";
 import CarDetail from "./CarDetail";
 
 const { Title, Text } = Typography;
@@ -50,7 +50,6 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
   const [selectedSpot, setSelectedSpot] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [dataLoading, setDataLoading] = useState(true);
-  const [svgContent, setSvgContent] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -60,6 +59,16 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
   const [carDetailsLoading, setCarDetailsLoading] = useState(false);
   const [carDetails, setCarDetails] = useState(null);
   const [DynamicSVG, setDynamicSVG] = useState(null);
+  
+  // State for spot creation
+  const [isAddingSpot, setIsAddingSpot] = useState(false);
+  const [newSpot, setNewSpot] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [resizeStartPos, setResizeStartPos] = useState({ x: 0, y: 0 });
+  const [spotCounter, setSpotCounter] = useState(1); // Start with 1 for spot counter
+  const [addSpotEnabled, setAddSpotEnabled] = useState(false); // Toggle for Add Spot functionality
 
   const carColors = [
     "#FF5733",
@@ -88,6 +97,12 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
       try {
         const response = await getParkingSpots(parkingLotId);
         const carMap = {};
+        console.log('a', response);
+        
+        
+        // Find highest spot ID to properly set counter
+        let highestSpotNumber = 0;
+        
         response.data.forEach((spot) => {
           if (spot.currentCar) {
             carMap[spot.spotId] = {
@@ -95,7 +110,19 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
               color: spot.currentCarColor,
             };
           }
+          
+          // Extract spot number if it follows the Z{number} format
+          if (spot.spotId && spot.spotId.startsWith('Z')) {
+            const spotNumber = parseInt(spot.spotId.substring(1), 10);
+            if (!isNaN(spotNumber) && spotNumber > highestSpotNumber) {
+              highestSpotNumber = spotNumber;
+            }
+          }
         });
+        
+        // Set spot counter to one higher than highest existing spot number
+        setSpotCounter(highestSpotNumber + 1);
+        
         setParkedCars(carMap);
         setError(null);
       } catch (err) {
@@ -111,12 +138,6 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
     if (onLayoutChange && layout) {
       onLayoutChange(layout);
     }
-    if (layout.svgPath) {
-      fetch(layout.svgPath)
-        .then((response) => response.text())
-        .then(setSvgContent)
-        .catch(() => setSvgContent(null));
-    }
   }, [layout, onLayoutChange]);
 
   const fetchCarDetails = async (carId) => {
@@ -129,7 +150,6 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
         setCarDetails(null);
         return;
       }
-      // Check if the response contains car details
       setCarDetails(response.data);
     } catch (err) {
       console.error("Failed to fetch car details:", err);
@@ -169,9 +189,9 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
       const layoutData = await processImageToLayout(mockFile);
       console.log(layoutData);
 
-      // Import SVG tương ứng
+      // Import corresponding SVG
       const svgModule = await import(`../../maps/${layoutName}.svg`);
-      setDynamicSVG(() => svgModule.ReactComponent); // Lưu component SVG
+      setDynamicSVG(() => svgModule.ReactComponent);
 
       setLayout(layoutData);
     } catch (err) {
@@ -232,8 +252,17 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
   const toggleEditMode = () => {
     setEditMode(!editMode);
     if (editMode) {
+      // Exiting edit mode
       setSelectedSpot(null);
       setModalOpen(false);
+      setIsAddingSpot(false);
+      setNewSpot(null);
+      setAddSpotEnabled(false); // Reset add spot toggle when exiting edit mode
+      
+      // If exiting edit mode, save any new spots
+      if (layout.spots.some(spot => spot.isNew)) {
+        saveNewSpots();
+      }
     }
     // Close car details when entering edit mode
     setSelectedCar(null);
@@ -241,8 +270,225 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
   };
 
   const handleSpotClick = (spotId) => {
+    if (isAddingSpot) return; // Don't open modal when adding spots
     setSelectedSpot(spotId);
     setModalOpen(true);
+  };
+
+  // Toggle AddSpot functionality
+  const toggleAddSpot = () => {
+    const newState = !addSpotEnabled;
+    setAddSpotEnabled(newState);
+    
+    // If turning off add spot mode, exit the adding spot state
+    if (!newState) {
+      setIsAddingSpot(false);
+      setNewSpot(null);
+    } else {
+      // If turning on add spot mode, enter adding spot state
+      setIsAddingSpot(true);
+      setSelectedSpot(null);
+      setModalOpen(false);
+    }
+  };
+
+  const handleContainerMouseDown = (e) => {
+    // Only allow creating new spots if addSpotEnabled is true
+    if (!isAddingSpot || isDragging || !addSpotEnabled || !editMode) return;
+    
+    // Get mouse position relative to the container
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - containerRect.left;
+    const y = e.clientY - containerRect.top;
+    
+    // Create new spot with a specific ID that will be used consistently
+    const spotId = `Z${spotCounter}`;
+    
+    const spot = {
+      id: spotId,
+      spotId: spotId, // Add spotId property to match what will be saved to DB
+      x: x,
+      y: y,
+      width: 60,
+      height: 120,
+      isNew: true, // Mark as new spot
+    };
+    
+    setNewSpot(spot);
+    
+    // Add spot to layout
+    setLayout(prev => ({
+      ...prev,
+      spots: [...prev.spots, spot]
+    }));
+    
+    // Increment counter for next spot
+    setSpotCounter(prev => prev + 1);
+    
+    // Start dragging the new spot
+    setIsDragging(true);
+    setDragOffset({ x: 0, y: 0 });
+  };
+
+  const handleMouseMove = (e) => {
+    if (!newSpot || !addSpotEnabled) return;
+    
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const mouseX = e.clientX - containerRect.left;
+    const mouseY = e.clientY - containerRect.top;
+    
+    if (isDragging) {
+      // Update spot position
+      const updatedSpots = layout.spots.map(spot => {
+        if (spot.id === newSpot.id) {
+          return {
+            ...spot,
+            x: mouseX - dragOffset.x,
+            y: mouseY - dragOffset.y
+          };
+        }
+        return spot;
+      });
+      
+      setLayout(prev => ({
+        ...prev,
+        spots: updatedSpots
+      }));
+      
+      // Update the newSpot reference
+      setNewSpot(updatedSpots.find(spot => spot.id === newSpot.id));
+    } else if (isResizing) {
+      // Calculate new width and height based on mouse movement
+      const dx = mouseX - resizeStartPos.x;
+      const dy = mouseY - resizeStartPos.y;
+      
+      const updatedSpots = layout.spots.map(spot => {
+        if (spot.id === newSpot.id) {
+          return {
+            ...spot,
+            width: Math.max(40, newSpot.width + dx),
+            height: Math.max(80, newSpot.height + dy)
+          };
+        }
+        return spot;
+      });
+      
+      setLayout(prev => ({
+        ...prev,
+        spots: updatedSpots
+      }));
+      
+      // Update resize start position
+      setResizeStartPos({ x: mouseX, y: mouseY });
+      
+      // Update the newSpot reference
+      setNewSpot(updatedSpots.find(spot => spot.id === newSpot.id));
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    setIsResizing(false);
+  };
+
+  const handleSpotMouseDown = (e, spotId) => {
+    e.stopPropagation();
+    // Only allow dragging if addSpotEnabled is true
+    if (!editMode || !isAddingSpot || !addSpotEnabled) return;
+    
+    const spot = layout.spots.find(s => s.id === spotId);
+    if (!spot || !spot.isNew) return;
+    
+    setNewSpot(spot);
+    
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const mouseX = e.clientX - containerRect.left;
+    const mouseY = e.clientY - containerRect.top;
+    
+    setIsDragging(true);
+    setDragOffset({
+      x: mouseX - spot.x,
+      y: mouseY - spot.y
+    });
+  };
+
+  const handleResizeHandleMouseDown = (e, spotId) => {
+    e.stopPropagation();
+    // Only allow resizing if addSpotEnabled is true
+    if (!editMode || !isAddingSpot || !addSpotEnabled) return;
+    
+    const spot = layout.spots.find(s => s.id === spotId);
+    if (!spot || !spot.isNew) return;
+    
+    setNewSpot(spot);
+    
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const mouseX = e.clientX - containerRect.left;
+    const mouseY = e.clientY - containerRect.top;
+    
+    setIsResizing(true);
+    setResizeStartPos({ x: mouseX, y: mouseY });
+  };
+
+  const removeSpot = (spotId) => {
+    // Allow removing spots regardless of addSpotEnabled state in edit mode
+    if (!editMode) return;
+    
+    setLayout(prev => ({
+      ...prev,
+      spots: prev.spots.filter(spot => spot.id !== spotId)
+    }));
+    
+    if (newSpot && newSpot.id === spotId) {
+      setNewSpot(null);
+    }
+  };
+
+  const saveNewSpots = async () => {
+    setIsLoading(true);
+    try {
+      // Filter new spots
+      const newSpots = layout.spots.filter(spot => spot.isNew);
+      
+      if (newSpots.length === 0) {
+        return;
+      }
+      
+      // Save new spots to backend
+      await Promise.all(newSpots.map(spot => {
+        // Use the spot's ID directly which was already set during creation
+        const spotData = {
+          x: spot.x,
+          y: spot.y,
+          width: spot.width,
+          height: spot.height,
+          parkingLotId: parkingLotId,
+          spotId: spot.id // Use the existing ID that was already assigned
+        };
+        
+        return saveNewSpot(spotData);
+      }));
+      
+      // Mark spots as no longer new
+      setLayout(prev => ({
+        ...prev,
+        spots: prev.spots.map(spot => ({
+          ...spot,
+          isNew: false
+        }))
+      }));
+      
+      import("antd").then(({ message }) =>
+        message.success("New parking spots saved successfully")
+      );
+    } catch (err) {
+      console.error("Failed to save new spots:", err);
+      import("antd").then(({ message }) =>
+        message.error("Failed to save new parking spots")
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Car details popup content
@@ -274,6 +520,7 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
   const renderSpots = () =>
     layout.spots.map((spot) => {
       const isCarSelected = selectedCar === spot.id;
+      const isNewSpot = spot.isNew;
 
       return (
         <g key={spot.id}>
@@ -282,11 +529,52 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
             y={spot.y}
             width={spot.width}
             height={spot.height}
-            stroke="white"
-            strokeWidth={1}
-            fill="rgba(80,80,80,0.3)"
-            strokeDasharray="5,3"
+            stroke={isNewSpot ? "#1890ff" : "white"}
+            strokeWidth={isNewSpot ? 2 : 1}
+            fill={isNewSpot ? "rgba(24,144,255,0.2)" : "rgba(80,80,80,0.3)"}
+            strokeDasharray={isNewSpot ? "" : "5,3"}
+            onMouseDown={(e) => handleSpotMouseDown(e, spot.id)}
+            style={{ cursor: isNewSpot && editMode && addSpotEnabled ? "move" : "default" }}
           />
+
+          {/* Resize handle for new spots - only visible when addSpotEnabled is true */}
+          {isNewSpot && editMode && addSpotEnabled && (
+            <g>
+              <circle
+                cx={spot.x + spot.width}
+                cy={spot.y + spot.height}
+                r={6}
+                fill="#1890ff"
+                stroke="white"
+                strokeWidth={1}
+                onMouseDown={(e) => handleResizeHandleMouseDown(e, spot.id)}
+                style={{ cursor: "nwse-resize" }}
+              />
+              
+              {/* Delete button for new spot */}
+              <foreignObject
+                x={spot.x + spot.width - 24}
+                y={spot.y}
+                width={24}
+                height={24}
+              >
+                <div
+                  xmlns="http://www.w3.org/1999/xhtml"
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
+                  <Button
+                    type="primary"
+                    danger
+                    size="small"
+                    onClick={() => removeSpot(spot.id)}
+                    disabled={isLoading}
+                  >
+                    x
+                  </Button>
+                </div>
+              </foreignObject>
+            </g>
+          )}
 
           {parkedCars[spot.id] ? (
             <g>
@@ -314,20 +602,8 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
                 />
               )}
 
-              {/* Car details bubble for selected car */}
-              {isCarSelected && (
-                <foreignObject
-                  x={spot.x + spot.width + 5}
-                  y={spot.y - 20}
-                  width={180}
-                  height={150}
-                >
-                  {renderCarDetails()}
-                </foreignObject>
-              )}
-
-              {/* Edit buttons only in edit mode */}
-              {editMode && (
+              {/* Remove car button only in edit mode */}
+              {editMode && !isNewSpot && (
                 <foreignObject
                   x={spot.x}
                   y={spot.y + spot.height / 2 - 15}
@@ -352,7 +628,8 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
               )}
             </g>
           ) : (
-            editMode && (
+            // Add car button (+) for empty spots in edit mode
+            editMode && !isNewSpot && (
               <foreignObject
                 x={spot.x}
                 y={spot.y + spot.height / 2 - 15}
@@ -400,6 +677,16 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
                 />
               </Col>
               <Col>
+                {editMode && (
+                  <Button
+                    type={addSpotEnabled ? "primary" : "default"}
+                    onClick={toggleAddSpot}
+                    style={{ marginRight: "8px" }}
+                    disabled={dataLoading || isLoading}
+                  >
+                    {addSpotEnabled ? "Disable Add Spot" : "Enable Add Spot"}
+                  </Button>
+                )}
                 <Button
                   type={editMode ? "primary" : "default"}
                   onClick={toggleEditMode}
@@ -430,6 +717,10 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
               overflow: "auto",
             }}
             ref={containerRef}
+            onMouseDown={editMode && isAddingSpot && addSpotEnabled ? handleContainerMouseDown : undefined}
+            onMouseMove={editMode && (isDragging || isResizing) && addSpotEnabled ? handleMouseMove : undefined}
+            onMouseUp={editMode && (isDragging || isResizing) ? handleMouseUp : undefined}
+            onMouseLeave={editMode && (isDragging || isResizing) ? handleMouseUp : undefined}
           >
             <Spin
               spinning={isLoading || dataLoading}
@@ -482,12 +773,18 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
           {editMode && (
             <Alert
               message="Edit Mode"
-              description="Click '+' to place a car in a parking spot. Click 'x' to remove a car. Click 'Done' when finished."
-              type="warning"
+              description={
+                addSpotEnabled 
+                  ? "Click on the map to create new parking spots. Drag to position them and use the resize handle to adjust size. Click 'x' to remove cars or spots."
+                  : "Click '+' to place a car in a parking spot. Click 'x' to remove a car. Enable 'Add Spot' to create new parking spots."
+              }
+              type="info"
               showIcon
               style={{ marginTop: "16px" }}
             />
           )}
+
+          {renderCarDetails()}
 
           {selectedSpot && (
             <Modal centered open={modalOpen} footer={null} closable={false}>

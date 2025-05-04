@@ -55,6 +55,7 @@ const CarManagement = () => {
 
   return (
     <Content style={{ background: "#fff", padding: 20, borderRadius: 20 }}>
+      <h2>Vehicle Management</h2>
       <CarTable data={carData} onEdit={handleEdit} loading={loading} />
 
       <Drawer
@@ -62,6 +63,8 @@ const CarManagement = () => {
         width={400}
         onClose={() => setDrawerVisible(false)}
         open={drawerVisible}
+        placement="bottom"
+        size="large"
         destroyOnClose
       >
         <CarForm onFinish={onFinish} form={form} editing={editing} />

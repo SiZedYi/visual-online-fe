@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
-const getAuthHeader = () => {
+export const getAuthHeader = () => {
   const token = localStorage.getItem("token");
   return { Authorization: `Bearer ${token}` };
 };
@@ -125,61 +125,31 @@ export const getCarDetail = async (carId) => {
   return res.data;
 };
 
-// Thêm hàm saveSpotData vào file api.js hiện có
+export const fetchUserGroups = async () => {
+  const response = await axios.get(`${API_URL}/user-groups`, {
+    headers: getAuthHeader(),
+  });
+  return response.data;
+};
 
-/**
- * Lưu thông tin ô đỗ xe xuống database
- * @param {Object} params - Các thông số của ô đỗ xe
- * @param {string} params.spotId - ID của ô đỗ xe
- * @param {number} params.x - Tọa độ x của ô đỗ
- * @param {number} params.y - Tọa độ y của ô đỗ
- * @param {number} params.width - Chiều rộng của ô đỗ (chỉ cần cho ô mới)
- * @param {number} params.height - Chiều cao của ô đỗ (chỉ cần cho ô mới)
- * @param {string} params.parkingLotId - ID của bãi đỗ xe
- * @param {boolean} params.delete - Nếu true, sẽ xóa ô đỗ
- * @returns {Promise<Object>} Dữ liệu trả về từ server
- */
-export const saveSpotData = async ({
-  spotId,
-  x,
-  y,
-  width,
-  height,
-  parkingLotId,
-  delete: isDelete,
-}) => {
+// Create a new parking spot
+export const saveNewSpot = async (spotData) => {
   try {
-    let endpoint = `/api/parking-lots/${parkingLotId}/spots/${spotId}`;
-    let method = 'PUT';
-    let data = { x, y };
-    
-    // Nếu có chiều rộng và chiều cao, thêm vào data
-    if (width !== undefined && height !== undefined) {
-      data.width = width;
-      data.height = height;
-    }
-    
-    // Nếu là lệnh xóa, thay đổi method thành DELETE
-    if (isDelete) {
-      method = 'DELETE';
-      data = null;
-    }
-    
-    const response = await fetch(endpoint, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: data ? JSON.stringify(data) : null,
-    });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    
-    return await response.json();
+    const response = await axios.post(`${API_URL}/parking/lots/${spotData.parkingLotId}/spots`, spotData);
+    return response.data;
   } catch (error) {
-    console.error('Error saving spot data:', error);
+    console.error('Error creating new spot:', error);
+    throw error;
+  }
+};
+
+// Delete an existing parking spot
+export const deleteSpot = async (parkingLotId, spotId) => {
+  try {
+    const response = await axios.delete(`${API_URL}/parking/lots/${parkingLotId}/spots/${spotId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting spot:', error);
     throw error;
   }
 };

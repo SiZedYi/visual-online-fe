@@ -141,7 +141,7 @@ const Sidebar = () => {
             key: "/roles",
             icon: <UserOutlined style={{ marginRight: 10 }} />,
             label: (
-              <NavLink style={{ padding: "20px" }} to="/roles" replace>
+              <NavLink style={{ padding: "20px" }} to="/user-group" replace>
                 Roles and Permission
               </NavLink>
             ),

@@ -124,6 +124,8 @@ const MapManagement = () => {
         width={400}
         onClose={() => setDrawerVisible(false)}
         open={drawerVisible}
+        placement="bottom"
+        size="large"
         destroyOnClose
       >
         {/* Assuming MapForm is defined elsewhere */}

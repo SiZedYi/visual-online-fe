@@ -13,6 +13,7 @@ import ProblemManagement from "./pages/ProblemManagement";
 import CarManagement from "./pages/CarManagement";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import PublicRoute from "./components/auth/PublicRoute";
+import UserGroupManagement from "./pages/UserGroupManagement";
 const config = {
   token: {
     fontFamily: "Roboto",
@@ -59,6 +60,7 @@ const App = () => {
             <Route path="revenue" element={<RevenueStatistics />} />
             <Route path="problem" element={<ProblemManagement />} />
             <Route path="car" element={<CarManagement />} />
+            <Route path="user-group" element={<UserGroupManagement/>} />
             {/* Add more protected routes as needed */}
           </Route>
         </Routes>
