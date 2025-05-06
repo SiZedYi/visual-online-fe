@@ -72,22 +72,15 @@ const MapManagement = () => {
   };
   
   const onFinish = async (values) => {
-    const formData = new FormData();
-    for (let key in values) {
-      if (key === "svgPath" && values.svgPath?.file) {
-        formData.append("svg", values.svgPath.file);
-      } else {
-        formData.append(key, values[key]);
-      }
-    }
+    const payload = { ...values };
   
     try {
       if (editing) {
-        formData.append("_id", editing._id);
-        await axios.post("http://localhost:3000/api/map/update", formData);
+        payload._id = editing._id;
+        await axios.post("http://localhost:5000/api/parking/update", payload)
         message.success("Map updated successfully!");
       } else {
-        await axios.post("http://localhost:3000/api/map", formData);
+        await axios.post("http://localhost:5000/api/parking/create", payload)
         message.success("Map added successfully!");
       }
       fetchParkingMaps();

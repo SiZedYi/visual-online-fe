@@ -28,7 +28,7 @@ const ProblemItem = ({ problem, showButtons, onResolve, onCancel }) => {
               marginRight: 10,
             }}
           >
-            Đã giải quyết
+            Approved
           </button>
           <button
             onClick={() => onCancel(problem.id)}

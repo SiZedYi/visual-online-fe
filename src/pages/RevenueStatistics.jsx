@@ -21,7 +21,7 @@ const RevenueStatistics = () => {
     const total = data.reduce((sum, d) => sum + d.value, 0);
     setRevenueData(data);
     setTotalRevenue(total);
-    message.success("Dữ liệu thống kê đã được cập nhật");
+    message.success("Data has been updated");
   };
 
   const handleFilter = (type, date) => {
@@ -37,7 +37,7 @@ const RevenueStatistics = () => {
           <RevenueFilterForm onFilter={handleFilter} />
         </Col>
         <Col span={24}>
-          <Card title={`Tổng doanh thu: ${totalRevenue.toLocaleString()} VND`}>
+          <Card title={`Total: ${totalRevenue.toLocaleString()} VND`}>
             <RevenueChart data={revenueData} />
           </Card>
         </Col>

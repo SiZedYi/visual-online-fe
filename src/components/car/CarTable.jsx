@@ -1,8 +1,14 @@
 import React from "react";
 import { Table, Button } from "antd";
 import dayjs from "dayjs";
+const formatFloorName = (floor) => {
+  if (!floor) return "";
+  return floor.replace(/floor(\d+)/i, (match, number) => `Floor ${number}`);
+};
 
 const CarTable = ({ data, onEdit, loading }) => {
+  console.log(data);
+  
   const columns = [
     {
       title: "License Plate",
@@ -22,15 +28,20 @@ const CarTable = ({ data, onEdit, loading }) => {
       render: (owner) => owner?.name || "N/A",
     },
     {
-      title: "Current Spot",
+      title: "Current Floor",
       dataIndex: "currentSpot",
-      render: (text) => (text ? text : "Not parked"),
+      render: (currentSpot) => (currentSpot.floor ? formatFloorName(currentSpot.floor) : "Not parked"),
     },
     {
-      title: "Entry Time",
-      dataIndex: "entryTime",
-      render: (entryTime) =>
-        entryTime ? dayjs(entryTime).format("HH:mm DD/MM/YYYY") : "Not entered",
+      title: "Current Spot",
+      dataIndex: "currentSpot",
+      render: (currentSpot) => (currentSpot.spotId ? currentSpot.spotId : "Not parked"),
+    },
+    {
+      title: "Register Day",
+      dataIndex: "updatedAt",
+      render: (updatedAt) =>
+        updatedAt ? dayjs(updatedAt).format("DD/MM/YYYY") : "Not entered",
     },
     {
       title: "Actions",

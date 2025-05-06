@@ -19,6 +19,10 @@ const MapForm = ({ onFinish, form, editing }) => {
         <InputNumber min={100} style={{ width: "100%" }} />
       </Form.Item>
 
+      <Form.Item name="price" label="Price" rules={[{ required: true }]}>
+        <InputNumber min={1} style={{ width: "100%" }} />
+      </Form.Item>
+
       <Form.Item name="height" label="Height" rules={[{ required: true }]}>
         <InputNumber min={100} style={{ width: "100%" }} />
       </Form.Item>
@@ -35,7 +39,7 @@ const MapForm = ({ onFinish, form, editing }) => {
 
       <Form.Item>
         <Button type="primary" htmlType="submit">
-          {editing ? "Update Car" : "Add Car"}
+          {editing ? "Update Map" : "Add Map"}
         </Button>
       </Form.Item>
     </Form>

@@ -44,6 +44,13 @@ const ParkingMapTable = ({ data, onEdit, onToggleActive, onDelete }) => {
       width: 150, // chỉ cần vừa đủ
       sorter: (a, b) => a.height - b.height,
     },
+    ,
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
+      width: 150, // chỉ cần vừa đủ
+    },
     {
       title: 'View Map',
       dataIndex: 'svgPath',

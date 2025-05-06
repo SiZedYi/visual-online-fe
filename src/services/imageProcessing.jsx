@@ -1,22 +1,20 @@
 // src/services/imageProcessing.js
 // Modified to handle different layouts based on filename
 
-export const processImageToLayout = async (imageFile) => {
+export const processImageToLayout = async (layoutName) => {
     try {
       // Extract filename from the image file
-      const filename = imageFile.name.toLowerCase();
-      console.log('Processing image:', filename);
       
       // Simulate processing delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Select layout based on filename
       let layoutName = 'map1';
-      if (filename.includes('map1')) {
+      if (layoutName.includes('map1')) {
         layoutName = 'map1';
-      } else if (filename.includes('map2')) {
+      } else if (layoutName.includes('map2')) {
         layoutName = 'map2';
-      } else if (filename.includes('map3')) {
+      } else if (layoutName.includes('map3')) {
         layoutName = 'map3';
       }
       

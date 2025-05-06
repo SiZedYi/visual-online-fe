@@ -7,13 +7,13 @@ import { Tabs } from "antd"; // nhớ đã cài Ant Design
 const { TabPane } = Tabs;
 
 const ProblemManagement = () => {
-  const [filter, setFilter] = useState("day");
+  const [filter, setFilter] = useState("year");
   const [problems, setProblems] = useState([
     {
       id: 1,
       user: "Nguyễn Văn A",
       apartment: "CT1-A101",
-      description: "Không thể đặt chỗ qua app",
+      description: "Can't register car through app",
       date: "2025-04-16",
       status: "pending",
     },
@@ -21,7 +21,7 @@ const ProblemManagement = () => {
       id: 2,
       user: "Trần Thị B",
       apartment: "Block B-B204",
-      description: "Chỗ đỗ xe bị chiếm",
+      description: "Blocking spot",
       date: "2025-04-15",
       status: "resolved",
     },
@@ -56,38 +56,6 @@ const ProblemManagement = () => {
       description: "Người lạ đỗ xe trái phép",
       date: "2025-04-10",
       status: "resolved",
-    },
-    {
-      id: 7,
-      user: "Vũ Văn G",
-      apartment: "Block C-C201",
-      description: "Không có biển báo hướng dẫn",
-      date: "2025-04-09",
-      status: "pending",
-    },
-    {
-      id: 8,
-      user: "Ngô Thị H",
-      apartment: "Block D-D305",
-      description: "Thiếu ánh sáng khu vực đỗ xe",
-      date: "2025-04-08",
-      status: "resolved",
-    },
-    {
-      id: 9,
-      user: "Trịnh Văn I",
-      apartment: "Block A-A303",
-      description: "Va chạm khi đỗ xe",
-      date: "2025-04-07",
-      status: "pending",
-    },
-    {
-      id: 10,
-      user: "Lý Thị K",
-      apartment: "Block B-B101",
-      description: "Bụi bẩn nhiều ở bãi xe",
-      date: "2025-04-06",
-      status: "resolved",
     }
   ]);
 
@@ -118,12 +86,12 @@ const ProblemManagement = () => {
 
   return (
     <div style={{ padding: 20 }}>
-      <ProblemFilter selected={filter} onChange={setFilter} />
+      {/* <ProblemFilter selected={filter} onChange={setFilter} /> */}
 
       <Tabs defaultActiveKey="1" style={{ marginTop: 20 }}>
-        <TabPane tab="Chưa giải quyết" key="1">
+        <TabPane tab="Problem" key="1">
           {pending.length === 0 ? (
-            <p>Không có phản ánh.</p>
+            <p>Parking Lot working good</p>
           ) : (
             pending.map((problem) => (
               <ProblemItem
@@ -137,9 +105,9 @@ const ProblemManagement = () => {
           )}
         </TabPane>
 
-        <TabPane tab="Đã giải quyết" key="2">
+        <TabPane tab="Approved" key="2">
           {resolved.length === 0 ? (
-            <p>Không có phản ánh.</p>
+            <p>Parking Lot working good</p>
           ) : (
             resolved.map((problem) => (
               <ProblemItem
