@@ -3,7 +3,7 @@ import { Layout, message, Form, Button, Drawer } from "antd";
 import axios from "axios";
 import MapForm from "../components/map/MapForm";
 import ParkingMapTable from "../components/map/ParkingMapTable";
-
+import { processImageToLayout } from '../services/imageProcessing'; 
 const { Content } = Layout;
 
 const MapManagement = () => {
@@ -72,15 +72,23 @@ const MapManagement = () => {
   };
   
   const onFinish = async (values) => {
-    const payload = { ...values };
-  
     try {
+      if (
+        !values.svgPath ||
+        !values.svgPath.fileList ||
+        ! values.svgPath.fileList.length > 0
+      ) {
+        message.error("Missing map image");
+      }
+      const fileName = values.svgPath.fileList[0].name.split('.')[0]; // lấy tên không đuôi
+      values.svgPath = `/maps/${fileName}.svg`;
+      const payload = await processImageToLayout(fileName, values)
       if (editing) {
         payload._id = editing._id;
-        await axios.post("http://localhost:5000/api/parking/update", payload)
+        await axios.post("http://localhost:5000/api/parking/update", payload);
         message.success("Map updated successfully!");
       } else {
-        await axios.post("http://localhost:5000/api/parking/create", payload)
+        await axios.post("http://localhost:5000/api/parking/create", payload);
         message.success("Map added successfully!");
       }
       fetchParkingMaps();
@@ -89,9 +97,10 @@ const MapManagement = () => {
     }
   
     setEditing(null);
-    form.resetFields();
-    setDrawerVisible(false);
+    // form.resetFields();
+    // setDrawerVisible(false);
   };
+  
 
   return (
     <Content style={{ background: "#fff", padding: 20, borderRadius: 20 }}>

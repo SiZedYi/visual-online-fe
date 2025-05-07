@@ -45,6 +45,7 @@ const layoutOptions = [
 
 const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
   const [parkedCars, setParkedCars] = useState({});
+  const [currentParkingLotId, setCurrentParkingLotId] = useState(parkingLotId);
   const [layout, setLayout] = useState({
     ...initialLayout,
     parkingSpots: initialLayout?.parkingSpots || [],
@@ -102,18 +103,18 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
 
   useEffect(() => {
     const fetchParkingData = async () => {
-      if (!parkingLotId) {
+      if (!currentParkingLotId) {
         setDataLoading(false);
         return;
       }
       setDataLoading(true);
       try {
-        const response = await getParkingSpots(parkingLotId);
+        const response = await getParkingSpots(currentParkingLotId);
         const carMap = {};
-
+  
         // Find highest spot ID to properly set counter
         let highestSpotNumber = 0;
-
+  
         if (response.data && response.data.parkingSpots) {
           response.data.parkingSpots.forEach((spot) => {
             if (spot.currentCar) {
@@ -122,7 +123,7 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
                 color: spot.currentCarColor,
               };
             }
-
+  
             // Extract spot number if it follows the Z{number} format
             if (spot.spotId && spot.spotId.startsWith('Z')) {
               const spotNumber = parseInt(spot.spotId.substring(1), 10);
@@ -132,10 +133,10 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
             }
           });
         }
-
+  
         // Set spot counter to one higher than highest existing spot number
         setSpotCounter(highestSpotNumber + 1);
-
+  
         setParkedCars(carMap);
         setError(null);
       } catch (err) {
@@ -146,7 +147,7 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
       }
     };
     fetchParkingData();
-  }, [parkingLotId]);
+  }, [currentParkingLotId]);
 
   useEffect(() => {
     if (onLayoutChange && layout) {
@@ -201,8 +202,12 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
       // First load the SVG to ensure it's available
       await loadSVG(layoutName);
       
-      // Then fetch the parking data for this floor
+      // Then fetch the parking data for this floor - update parkingLotId
       let floorId = layoutName.replace("map", "floor");
+      
+      // Cập nhật currentParkingLotId thành floorId mới
+      setCurrentParkingLotId(floorId);
+      
       const response = await getParkingSpots(floorId);
       
       // Transform the API response to match the expected layout structure
@@ -221,6 +226,20 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
       setSelectedCar(null);
       setCarDetails(null);
       setError(null);
+      
+      // IMPORTANT FIX: Reset or update the parkedCars state with the new floor's data
+      const newCarMap = {};
+      if (response.data && response.data.parkingSpots) {
+        response.data.parkingSpots.forEach((spot) => {
+          if (spot.currentCar) {
+            newCarMap[spot.spotId] = {
+              id: spot.currentCar,
+              color: spot.currentCarColor,
+            };
+          }
+        });
+      }
+      setParkedCars(newCarMap);
       
     } catch (err) {
       console.error("Failed to load layout:", err);
@@ -243,7 +262,7 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
       const savedData = await saveCarData({
         spotId,
         carData: defaultCarData,
-        parkingLotId,
+        parkingLotId: currentParkingLotId, // Sử dụng currentParkingLotId thay vì parkingLotId
       });
       setParkedCars({ ...parkedCars, [spotId]: savedData });
       setSelectedSpot(null);
@@ -259,11 +278,15 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
   const removeCar = async (spotId) => {
     setIsLoading(true);
     try {
-      await saveCarData({ spotId, carData: null, parkingLotId });
+      await saveCarData({ 
+        spotId, 
+        carData: null, 
+        parkingLotId: currentParkingLotId  // Sử dụng currentParkingLotId thay vì parkingLotId
+      });
       const updated = { ...parkedCars };
       delete updated[spotId];
       setParkedCars(updated);
-
+  
       // Clear selection if removing the selected car
       if (selectedCar === spotId) {
         setSelectedCar(null);
@@ -492,11 +515,11 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
     try {
       // Filter new spots - use parkingSpots consistently
       const newSpots = (layout.parkingSpots || []).filter(spot => spot.isNew);
-
+  
       if (newSpots.length === 0) {
         return;
       }
-
+  
       // Save new spots to backend
       await Promise.all(newSpots.map(spot => {
         // Use the spot's ID directly which was already set during creation
@@ -505,13 +528,13 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
           y: spot.y,
           width: spot.width,
           height: spot.height,
-          parkingLotId: parkingLotId,
+          parkingLotId: currentParkingLotId, // Sử dụng currentParkingLotId thay vì parkingLotId
           spotId: spot.spotId // Use the existing ID that was already assigned
         };
-
+  
         return saveNewSpot(spotData);
       }));
-
+  
       // Mark spots as no longer new - use parkingSpots consistently
       setLayout(prev => ({
         ...prev,
@@ -520,7 +543,7 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId }) => {
           isNew: false
         }))
       }));
-
+  
       import("antd").then(({ message }) =>
         message.success("New parking spots saved successfully")
       );

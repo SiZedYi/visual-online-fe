@@ -1,14 +1,22 @@
 import React from "react";
 import { Table, Button } from "antd";
 import dayjs from "dayjs";
+
 const formatFloorName = (floor) => {
   if (!floor) return "";
   return floor.replace(/floor(\d+)/i, (match, number) => `Floor ${number}`);
 };
 
+const colorOptions = [
+  { value: '#FF5733', label: 'Red' },
+  { value: '#33FF57', label: 'Green' },
+  { value: '#3357FF', label: 'Blue' },
+  { value: '#FFD700', label: 'Yellow' },
+  { value: '#000000', label: 'Black' },
+  { value: '#FFFFFF', label: 'White' }
+];
+
 const CarTable = ({ data, onEdit, loading }) => {
-  console.log(data);
-  
   const columns = [
     {
       title: "License Plate",
@@ -21,6 +29,10 @@ const CarTable = ({ data, onEdit, loading }) => {
     {
       title: "Color",
       dataIndex: "color",
+      render: (color) => {
+        const matched = colorOptions.find(option => option.value.toLowerCase() === color?.toLowerCase());
+        return matched ? matched.label : color || "Unknown";
+      },
     },
     {
       title: "Owner",
@@ -28,14 +40,19 @@ const CarTable = ({ data, onEdit, loading }) => {
       render: (owner) => owner?.name || "N/A",
     },
     {
+      title: "Contact Info",
+      dataIndex: "ownerInfo",
+      render: (owner) => owner?.contactInfo || "N/A",
+    },
+    {
       title: "Current Floor",
       dataIndex: "currentSpot",
-      render: (currentSpot) => (currentSpot.floor ? formatFloorName(currentSpot.floor) : "Not parked"),
+      render: (currentSpot) => (currentSpot?.floor ? formatFloorName(currentSpot.floor) : "Not parked"),
     },
     {
       title: "Current Spot",
       dataIndex: "currentSpot",
-      render: (currentSpot) => (currentSpot.spotId ? currentSpot.spotId : "Not parked"),
+      render: (currentSpot) => (currentSpot?.spotId ? currentSpot.spotId : "Not parked"),
     },
     {
       title: "Register Day",
