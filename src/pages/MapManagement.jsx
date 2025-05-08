@@ -91,13 +91,16 @@ const MapManagement = () => {
         await axios.post("http://localhost:5000/api/parking/create", payload);
         message.success("Map added successfully!");
       }
-      fetchParkingMaps();
+      await fetchParkingMaps();
+      setEditing(null);
+      setDrawerVisible(false);
+      
     } catch (error) {
       message.error("Error submitting form.");
     }
   
-    setEditing(null);
-    // form.resetFields();
+    // setEditing(null);
+    form.resetFields();
     // setDrawerVisible(false);
   };
   

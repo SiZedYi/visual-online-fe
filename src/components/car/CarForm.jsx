@@ -33,11 +33,11 @@ const CarForm = ({ onFinish, form, editing }) => {
     <Form form={form} onFinish={onFinish} layout="vertical">
       <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
        
-          <div style={{ padding: '8px 12px', background: "linear-gradient(to left, #C5C5 0%, #6C5CE7 100%)",color: "white", borderRadius: '6px' }}>
+          <div style={{ padding: '8px 12px', border: "#6C5CE7 1px solid", backgroundColor: "#feecff",borderRadius: '6px' }}>
             {editing?.currentSpot?.floor ? editing.currentSpot.floor.replace(/floor(\d+)/i, 'Floor $1') : 'Not parked'}
           </div>
 
-          <div style={{ padding: '8px 12px', background: "linear-gradient(to left, #C5C5 0%, #6C5CE7 100%)",color: "white", borderRadius: '6px' }}>
+          <div style={{ padding: '8px 12px', border: "#6C5CE7 1px solid",backgroundColor: "#feecff", borderRadius: '6px' }}>
             {editing?.currentSpot?.spotId || 'Not parked'}
           </div>
       </div>

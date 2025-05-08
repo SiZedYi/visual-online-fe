@@ -1,7 +1,8 @@
 import React from 'react';
 import { Form, Input, Button, Space, Select } from 'antd';
+import { CaretDownOutlined } from '@ant-design/icons';
 
-const CarForm = ({ onSubmit, onCancel, isLoading }) => {
+const CarForm = ({ onSubmit, onCancel, isLoading, users }) => {
   const [form] = Form.useForm();
 
   const handleFinish = (values) => {
@@ -16,9 +17,22 @@ const CarForm = ({ onSubmit, onCancel, isLoading }) => {
       initialValues={{
         color: "#3357FF",
         model: "",
-        licensePlate: ""
+        licensePlate: "",
+        userId: ""
       }}
     >
+      <Form.Item
+        label="User"
+        name="userId"
+        rules={[{ required: true, message: 'Please select a user!' }]}
+      >
+        <Select
+          placeholder="Select a user"
+          options={users}
+          suffixIcon={<CaretDownOutlined />}
+        />
+      </Form.Item>
+
       <Form.Item
         label="Color"
         name="color"
@@ -26,7 +40,7 @@ const CarForm = ({ onSubmit, onCancel, isLoading }) => {
       >
         <Select
           placeholder="Select a color"
-          suffixIcon={null}
+          suffixIcon={<CaretDownOutlined />}
           options={[
             { value: '#FF5733', label: 'Red' },
             { value: '#33FF57', label: 'Green' },

@@ -108,9 +108,9 @@
       { "spotId": "H9", "x": 860, "y": 610, "width": 30, "height": 70, "type": "standard", "label": "H9", "isActive": true, "currentCar": null, "createdAt": {"$date": "2025-04-04T00:00:00Z"}, "updatedAt": {"$date": "2025-04-04T00:00:00Z"} },
       { "spotId": "H10", "x": 890, "y": 610, "width": 30, "height": 70, "type": "standard", "label": "H10", "isActive": true, "currentCar": null, "createdAt": {"$date": "2025-04-04T00:00:00Z"}, "updatedAt": {"$date": "2025-04-04T00:00:00Z"} },
       
-      { "spotId": "HC1", "x": 980, "y": 10, "width": 15, "height": 70, "type": "handicap", "label": "HC1", "isActive": true, "currentCar": null, "createdAt": {"$date": "2025-04-04T00:00:00Z"}, "updatedAt": {"$date": "2025-04-04T00:00:00Z"} },
-      { "spotId": "HC2", "x": 980, "y": 210, "width": 15, "height": 70, "type": "handicap", "label": "HC2", "isActive": true, "currentCar": null, "createdAt": {"$date": "2025-04-04T00:00:00Z"}, "updatedAt": {"$date": "2025-04-04T00:00:00Z"} },
-      { "spotId": "HC3", "x": 980, "y": 410, "width": 15, "height": 70, "type": "handicap", "label": "HC3", "isActive": true, "currentCar": null, "createdAt": {"$date": "2025-04-04T00:00:00Z"}, "updatedAt": {"$date": "2025-04-04T00:00:00Z"} },
-      { "spotId": "HC4", "x": 980, "y": 610, "width": 15, "height": 70, "type": "handicap", "label": "HC4", "isActive": true, "currentCar": null, "createdAt": {"$date": "2025-04-04T00:00:00Z"}, "updatedAt": {"$date": "2025-04-04T00:00:00Z"} }
+      { "spotId": "HC1", "x": 980, "y": 10, "width": 30, "height": 70, "type": "handicap", "label": "HC1", "isActive": true, "currentCar": null, "createdAt": {"$date": "2025-04-04T00:00:00Z"}, "updatedAt": {"$date": "2025-04-04T00:00:00Z"} },
+      { "spotId": "HC2", "x": 980, "y": 210, "width": 30, "height": 70, "type": "handicap", "label": "HC2", "isActive": true, "currentCar": null, "createdAt": {"$date": "2025-04-04T00:00:00Z"}, "updatedAt": {"$date": "2025-04-04T00:00:00Z"} },
+      { "spotId": "HC3", "x": 980, "y": 410, "width": 30, "height": 70, "type": "handicap", "label": "HC3", "isActive": true, "currentCar": null, "createdAt": {"$date": "2025-04-04T00:00:00Z"}, "updatedAt": {"$date": "2025-04-04T00:00:00Z"} },
+      { "spotId": "HC4", "x": 980, "y": 610, "width": 30, "height": 70, "type": "handicap", "label": "HC4", "isActive": true, "currentCar": null, "createdAt": {"$date": "2025-04-04T00:00:00Z"}, "updatedAt": {"$date": "2025-04-04T00:00:00Z"} }
     ]
 }

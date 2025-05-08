@@ -13,7 +13,7 @@ const convertMap = (mapName, input, values) => {
         name: values.name,
         description: values.description,
         svgPath: mapData.svgPath,
-        price: 1000,
+        price: values.price,
         width: mapData.width,
         height: mapData.height,
         parkingSpots: mapData.spots.map(spot => ({
@@ -167,10 +167,10 @@ const getLayoutByName = (name) => {
         { id: 'H10', x: 890, y: 610, width: 30, height: 70 },
 
         // Handicap Spots
-        { id: 'HC1', x: 980, y: 10, width: 15, height: 70 },
-        { id: 'HC2', x: 980, y: 210, width: 15, height: 70 },
-        { id: 'HC3', x: 980, y: 410, width: 15, height: 70 },
-        { id: 'HC4', x: 980, y: 610, width: 15, height: 70 }
+        { id: 'HC1', x: 980, y: 10, width: 30, height: 70 },
+        { id: 'HC2', x: 980, y: 210, width: 30, height: 70 },
+        { id: 'HC3', x: 980, y: 410, width: 30, height: 70 },
+        { id: 'HC4', x: 980, y: 610, width: 30, height: 70 }
       ]
     },
     'map2': {

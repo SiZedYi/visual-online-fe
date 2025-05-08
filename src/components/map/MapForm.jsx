@@ -19,12 +19,13 @@ const MapForm = ({ onFinish, form, editing }) => {
         <InputNumber min={100} style={{ width: "100%" }} />
       </Form.Item>
 
-      <Form.Item name="price" label="Price" rules={[{ required: true }]}>
-        <InputNumber min={1} style={{ width: "100%" }} />
-      </Form.Item>
 
       <Form.Item name="height" label="Height" rules={[{ required: true }]}>
         <InputNumber min={100} style={{ width: "100%" }} />
+      </Form.Item>
+
+      <Form.Item name="price" label="Price (x1000 VND)" rules={[{ required: true }]}>
+        <InputNumber min={1} style={{ width: "100%" }} />
       </Form.Item>
 
       <Form.Item name="description" label="Description">

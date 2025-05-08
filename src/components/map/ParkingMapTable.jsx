@@ -27,35 +27,36 @@ const ParkingMapTable = ({ data, onEdit, onToggleActive, onDelete }) => {
       dataIndex: 'description',
       key: 'description',
       render: (text) => text || '—',
-      width: 300,
+      width: 200,
       ellipsis: true, // Truncate long content with ellipses
     },
     {
       title: 'Width (px)',
       dataIndex: 'width',
       key: 'width',
-      width: 150, // chỉ cần vừa đủ
+      width: 130, 
       sorter: (a, b) => a.width - b.width,
     },
     {
       title: 'Height (px)',
       dataIndex: 'height',
       key: 'height',
-      width: 150, // chỉ cần vừa đủ
+      width: 130, 
       sorter: (a, b) => a.height - b.height,
     },
     ,
     {
-      title: 'Price',
+      title: 'Price (x1000 VND)',
       dataIndex: 'price',
       key: 'price',
-      width: 150, // chỉ cần vừa đủ
+      width: 180, 
+      sorter: (a, b) => a.price - b.price
     },
     {
       title: 'View Map',
       dataIndex: 'svgPath',
       key: 'svgPath',
-      width: 180, // chỉ cần vừa đủ
+      width: 180, 
       render: (svgPath) =>
         svgPath ? (
           <Image

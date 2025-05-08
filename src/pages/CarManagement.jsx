@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Layout, message, Form, Drawer } from "antd";
 import CarForm from "../components/car/CarForm";
 import CarTable from "../components/car/CarTable";
-import { fetchCars } from "../api/parking-lot/api"; // <-- removed createCar
+import { fetchCars } from "../api/parking-lot/api";
 
 const { Content } = Layout;
 
@@ -16,7 +16,30 @@ const CarManagement = () => {
   const loadCars = async () => {
     setLoading(true);
     try {
-      const res = await fetchCars();
+      // Lấy thông tin user từ localStorage
+      const userStr = localStorage.getItem('user');
+      let isAdmin = false;
+
+      if (userStr) {
+        try {
+          const user = JSON.parse(userStr);
+          const username = user.username || '';
+          const fullName = user.fullName || '';
+
+          if (
+            username.toLowerCase().includes('admin') ||
+            fullName.toLowerCase().includes('admin')
+          ) {
+            isAdmin = true;
+          }
+        } catch (err) {
+          console.error('Error parsing user from localStorage:', err);
+        }
+      }
+
+      // Gọi fetchCars với true / false
+      const res = await fetchCars(isAdmin);
+
       if (res.success) {
         setCarData(res.data);
       } else {
@@ -42,6 +65,7 @@ const CarManagement = () => {
   const onFinish = async (values) => {
     try {
       if (editing) {
+        console.log(values);
         message.info("Edit feature not implemented yet.");
       }
     } catch (error) {

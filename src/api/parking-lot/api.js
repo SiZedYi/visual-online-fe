@@ -48,11 +48,13 @@ export const getParkingLot = async (id) => {
 };
 
 // Get spots for a parking lot
-export const getParkingSpots = async (parkingLotId) => {
+export const getParkingSpots = async (parkingLotId, isAdmin) => {
   try {
     const response = await axios.get(
-      `${API_URL}/parking/lots/${parkingLotId}/spots`
-    );
+      `${API_URL}/parking/lots/${parkingLotId}/spots?isAdmin=${isAdmin}`
+      , {
+        headers: getAuthHeader(),
+      });
     return response.data;
   } catch (error) {
     console.error("Error fetching parking spots:", error);
@@ -99,7 +101,14 @@ export const createParkingSpot = async (parkingLotId, spotData) => {
   }
 };
 
-export const fetchCars = async () => {
+export const fetchCars = async (options) => {
+  if (options) {
+    const response = await axios.get(`${API_URL}/cars/all`,
+      {
+        headers: getAuthHeader(),
+      });
+    return response.data
+  }
   const response = await axios.get(`${API_URL}/cars`,
     {
       headers: getAuthHeader(),
@@ -127,6 +136,13 @@ export const getCarDetail = async (carId) => {
 
 export const fetchUserGroups = async () => {
   const response = await axios.get(`${API_URL}/user-groups`, {
+    headers: getAuthHeader(),
+  });
+  return response.data;
+};
+
+export const fetchUsers = async () => {
+  const response = await axios.get(`${API_URL}/auth/users`, {
     headers: getAuthHeader(),
   });
   return response.data;

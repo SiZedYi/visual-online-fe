@@ -9,7 +9,8 @@ import {
   UserOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  LogoutOutlined,
+  IssuesCloseOutlined,
+  BorderOuterOutlined,
 } from "@ant-design/icons";
 import { useLocation, NavLink } from "react-router-dom";
 
@@ -22,11 +23,89 @@ const Sidebar = () => {
     JSON.parse(localStorage.getItem("user")) || {
       fullName: "Guest",
       role: "guest",
+      permissions: [],
     }
   );
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
+
+  // Check if user is admin (by role or permission)
+  const isAdmin = user.isAdmin;
+
+  // Define all menu items
+  const menuItems = [
+    {
+      key: "/",
+      icon: <DashboardOutlined style={{ marginRight: 10 }} />,
+      label: (
+        <NavLink style={{ padding: "20px" }} to="/" replace>
+          Dashboard
+        </NavLink>
+      ),
+      style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
+    },
+    isAdmin && {
+      key: "/map",
+      icon: <BorderOuterOutlined style={{ marginRight: 10 }} />,
+      label: (
+        <NavLink style={{ padding: "20px" }} to="/map" replace>
+          Map Management
+        </NavLink>
+      ),
+      style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
+    },
+    {
+      key: "/car",
+      icon: <CarOutlined style={{ marginRight: 10 }} />,
+      label: (
+        <NavLink style={{ padding: "20px" }} to="/car" replace>
+          Vehicle Management
+        </NavLink>
+      ),
+      style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
+    },
+    isAdmin && {
+      key: "/revenue",
+      icon: <BarChartOutlined style={{ marginRight: 10 }} />,
+      label: (
+        <NavLink style={{ padding: "20px" }} to="/revenue" replace>
+          Analyst
+        </NavLink>
+      ),
+      style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
+    },
+    isAdmin && {
+      key: "/problem",
+      icon: <WarningOutlined style={{ marginRight: 10 }} />,
+      label: (
+        <NavLink style={{ padding: "20px" }} to="/problem" replace>
+          Problems
+        </NavLink>
+      ),
+      style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
+    },
+    isAdmin && {
+      key: "/roles",
+      icon: <IssuesCloseOutlined style={{ marginRight: 10 }} />,
+      label: (
+        <NavLink style={{ padding: "20px" }} to="/user-group" replace>
+          Roles and Permission
+        </NavLink>
+      ),
+      style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
+    },
+    isAdmin && {
+      key: "/users",
+      icon: <UserOutlined style={{ marginRight: 10 }} />,
+      label: (
+        <NavLink style={{ padding: "20px" }} to="/users" replace>
+          User Management
+        </NavLink>
+      ),
+      style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
+    },
+  ].filter(Boolean); // Filter out false items
 
   return (
     <Sider
@@ -43,9 +122,9 @@ const Sidebar = () => {
         boxShadow:
           "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
       }}
-      trigger={null} // We'll use a custom trigger
+      trigger={null}
     >
-      {/* Toggle Button - Top Right Corner */}
+      {/* Toggle Button */}
       <div
         style={{
           position: "absolute",
@@ -74,7 +153,9 @@ const Sidebar = () => {
         {!collapsed ? (
           <>
             VISUAL ONLINE <br />
-            <span style={{ fontSize: 20, color: "#333" }}>PARKING MANAGER</span>
+            <span style={{ fontSize: 20, color: "#333" }}>
+              PARKING MANAGER
+            </span>
           </>
         ) : (
           ""
@@ -86,70 +167,10 @@ const Sidebar = () => {
         mode="vertical"
         selectedKeys={[location.pathname]}
         style={{ borderRadius: "10px", marginTop: 20 }}
-        items={[
-          {
-            key: "/",
-            icon: <DashboardOutlined style={{ marginRight: 10 }} />,
-            label: (
-              <NavLink style={{ padding: "20px" }} to="/" replace>
-                Dashboard
-              </NavLink>
-            ),
-            style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
-          },
-          {
-            key: "/map",
-            icon: <CarOutlined style={{ marginRight: 10 }} />,
-            label: (
-              <NavLink style={{ padding: "20px" }} to="/map" replace>
-                Map Management
-              </NavLink>
-            ),
-            style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
-          },
-          {
-            key: "/car",
-            icon: <CarOutlined style={{ marginRight: 10 }} />,
-            label: (
-              <NavLink style={{ padding: "20px" }} to="/car" replace>
-                Vehicle Management
-              </NavLink>
-            ),
-            style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
-          },
-          {
-            key: "/revenue",
-            icon: <BarChartOutlined style={{ marginRight: 10 }} />,
-            label: (
-              <NavLink style={{ padding: "20px" }} to="/revenue" replace>
-                Analyst
-              </NavLink>
-            ),
-            style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
-          },
-          {
-            key: "/problem",
-            icon: <WarningOutlined style={{ marginRight: 10 }} />,
-            label: (
-              <NavLink style={{ padding: "20px" }} to="/problem" replace>
-                Problems
-              </NavLink>
-            ),
-            style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
-          },
-          {
-            key: "/roles",
-            icon: <UserOutlined style={{ marginRight: 10 }} />,
-            label: (
-              <NavLink style={{ padding: "20px" }} to="/user-group" replace>
-                Roles and Permission
-              </NavLink>
-            ),
-            style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
-          },
-        ]}
+        items={menuItems}
       />
-      {/* User Info - Bottom Fixed */}
+
+      {/* User Info */}
       {!collapsed && (
         <div
           style={{
@@ -164,7 +185,6 @@ const Sidebar = () => {
             bottom: "10px",
           }}
         >
-          {/* User Info Section (2/3) */}
           <div
             style={{ display: "flex", alignItems: "center", gap: 12, flex: 2 }}
           >
@@ -174,11 +194,11 @@ const Sidebar = () => {
             />
             <div>
               <div style={{ fontWeight: 600 }}>{user.fullName}</div>
-              <div style={{ fontSize: 12, color: "#888" }}>User</div>
+              <div style={{ fontSize: 12, color: "#888" }}>
+                {user.role || "User"}
+              </div>
             </div>
           </div>
-
-          {/* Logout Button (1/3) */}
           <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
             <Button
               color="danger"
@@ -186,7 +206,7 @@ const Sidebar = () => {
               onClick={() => {
                 localStorage.removeItem("token");
                 localStorage.removeItem("user");
-                window.location.href = "/login"; // Redirect to login
+                window.location.href = "/login";
               }}
             >
               Log out
@@ -199,3 +219,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
