@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import ProblemFilter from "../components/problem/ProblemFilter";
-import ProblemItem from "../components/problem/ProblemItem";
+import ProblemFilter from "../components/invoice/InvoiceFilter";
+import ProblemItem from "../components/invoice/InvoiceItem";
 import dayjs from "dayjs";
 import { Tabs } from "antd"; // nhớ đã cài Ant Design
 
 const { TabPane } = Tabs;
 
-const ProblemManagement = () => {
+const InvoiceManagement = () => {
   const [filter, setFilter] = useState("year");
   const [problems, setProblems] = useState([
     {
@@ -123,4 +123,4 @@ const ProblemManagement = () => {
   );
 };
 
-export default ProblemManagement;
+export default InvoiceManagement;

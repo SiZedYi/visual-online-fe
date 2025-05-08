@@ -30,6 +30,8 @@ const CarTable = ({ data, onEdit, loading }) => {
     { value: "color", label: "Color" },
     { value: "ownerInfo.name", label: "Owner Name" },
     { value: "ownerInfo.contactInfo", label: "Contact Info" },
+    { value: "ownerInfo.apartment", label: "Apartment" },
+
     { value: "currentSpot.floor", label: "Floor" },
     { value: "currentSpot.spotId", label: "Spot ID" }
   ];
@@ -77,6 +79,7 @@ const CarTable = ({ data, onEdit, loading }) => {
         car.model?.toLowerCase().includes(searchLower) ||
         car.ownerInfo?.name?.toLowerCase().includes(searchLower) ||
         car.ownerInfo?.contactInfo?.toLowerCase().includes(searchLower) ||
+        car.ownerInfo?.apartment?.toLowerCase().includes(searchLower) ||  // Added apartment search
         car.currentSpot?.spotId?.toLowerCase().includes(searchLower)
       ) {
         return true;
@@ -134,6 +137,12 @@ const CarTable = ({ data, onEdit, loading }) => {
       dataIndex: "ownerInfo",
       render: (owner) => owner?.name || "N/A",
       sorter: (a, b) => (a.ownerInfo?.name || "").localeCompare(b.ownerInfo?.name || ""),
+    },
+    {
+      title: "Apartment",
+      dataIndex: "ownerInfo",
+      render: (owner) => owner?.apartment || "N/A",
+      sorter: (a, b) => (a.ownerInfo?.apartment || "").localeCompare(b.ownerInfo?.apartment || ""),
     },
     {
       title: "Contact Info",

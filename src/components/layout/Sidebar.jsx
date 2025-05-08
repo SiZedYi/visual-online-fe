@@ -76,11 +76,11 @@ const Sidebar = () => {
       style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
     },
     isAdmin && {
-      key: "/problem",
+      key: "/billing",
       icon: <WarningOutlined style={{ marginRight: 10 }} />,
       label: (
-        <NavLink style={{ padding: "20px" }} to="/problem" replace>
-          Problems
+        <NavLink style={{ padding: "20px" }} to="/billing" replace>
+          Invoice Management
         </NavLink>
       ),
       style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },

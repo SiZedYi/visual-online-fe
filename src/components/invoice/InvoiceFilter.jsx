@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProblemFilter = ({ selected, onChange }) => {
+const InvoiceFilter = ({ selected, onChange }) => {
   const filters = ["day", "month", "year"];
 
   return (
@@ -26,4 +26,4 @@ const ProblemFilter = ({ selected, onChange }) => {
   );
 };
 
-export default ProblemFilter;
+export default InvoiceFilter;

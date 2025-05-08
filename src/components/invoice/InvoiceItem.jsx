@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProblemItem = ({ problem, showButtons, onResolve, onCancel }) => {
+const InvoiceItem = ({ problem, showButtons, onResolve, onCancel }) => {
   return (
     <div
       style={{
@@ -48,4 +48,4 @@ const ProblemItem = ({ problem, showButtons, onResolve, onCancel }) => {
   );
 };
 
-export default ProblemItem;
+export default InvoiceItem;

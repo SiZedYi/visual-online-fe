@@ -9,7 +9,7 @@ import AppLayout from "./components/layout/AppLayout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import RevenueStatistics from "./pages/RevenueStatistics";
-import ProblemManagement from "./pages/ProblemManagement";
+import InvoiceManagement from "./pages/InvoiceManagement";
 import CarManagement from "./pages/CarManagement";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import PublicRoute from "./components/auth/PublicRoute";
@@ -59,7 +59,7 @@ const App = () => {
             <Route index element={<Dashboard />} />
             <Route path="map" element={<MapManagement />} />
             <Route path="revenue" element={<RevenueStatistics />} />
-            <Route path="problem" element={<ProblemManagement />} />
+            <Route path="billing" element={<InvoiceManagement />} />
             <Route path="car" element={<CarManagement />} />
             <Route path="user-group" element={<UserGroupManagement/>} />
             <Route path="users" element={<UserManagement/>} />
