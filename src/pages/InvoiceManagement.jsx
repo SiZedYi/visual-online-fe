@@ -1,124 +1,162 @@
-import React, { useState } from "react";
-import ProblemFilter from "../components/invoice/InvoiceFilter";
-import ProblemItem from "../components/invoice/InvoiceItem";
+import React, { useState, useEffect } from "react";
+import InvoiceItem from "../components/invoice/InvoiceItem";
+import { Tabs, Select, Spin, message, DatePicker, Tag } from "antd";
+import axios from "axios";
 import dayjs from "dayjs";
-import { Tabs } from "antd"; // nhớ đã cài Ant Design
+import { getPayments } from "../api/parking-lot/api";
+import { CaretDownOutlined } from "@ant-design/icons";
 
 const { TabPane } = Tabs;
+const { Option } = Select;
+const { RangePicker } = DatePicker;
+const getStatusTag = (status) => {
+  switch (status) {
+    case "pending":
+      return <Tag color="orange">Pending</Tag>;
+    case "paid":
+      return <Tag color="green">Paid</Tag>;
+    case "overdue":
+      return <Tag color="red">Overdue</Tag>;
+    default:
+      return <Tag>Unknown</Tag>;
+  }
+};
 
 const InvoiceManagement = () => {
   const [filter, setFilter] = useState("year");
-  const [problems, setProblems] = useState([
-    {
-      id: 1,
-      user: "Nguyễn Văn A",
-      apartment: "CT1-A101",
-      description: "Can't register car through app",
-      date: "2025-04-16",
-      status: "pending",
-    },
-    {
-      id: 2,
-      user: "Trần Thị B",
-      apartment: "Block B-B204",
-      description: "Blocking spot",
-      date: "2025-04-15",
-      status: "resolved",
-    },
-    {
-      id: 3,
-      user: "Lê Văn C",
-      apartment: "CT2-A303",
-      description: "Ứng dụng bị lỗi khi vào bản đồ",
-      date: "2025-04-01",
-      status: "pending",
-    },
-    {
-      id: 4,
-      user: "Phạm Thị D",
-      apartment: "Block D-D102",
-      description: "Xe khác đỗ chắn lối đi",
-      date: "2025-04-12",
-      status: "resolved",
-    },
-    {
-      id: 5,
-      user: "Đặng Văn E",
-      apartment: "Block A-A205",
-      description: "Chỗ đỗ bị nước ngập",
-      date: "2025-04-11",
-      status: "pending",
-    },
-    {
-      id: 6,
-      user: "Hoàng Thị F",
-      apartment: "Block B-B110",
-      description: "Người lạ đỗ xe trái phép",
-      date: "2025-04-10",
-      status: "resolved",
-    }
-  ]);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [invoices, setInvoices] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleResolve = (id) => {
-    setProblems((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, status: "resolved" } : p))
+  const fetchInvoices = async () => {
+    setLoading(true);
+    try {
+      // build query params
+      const params = {};
+      if (startDate) params.startDate = startDate;
+      if (endDate) params.endDate = endDate;
+
+      const res = await getPayments(params);
+      const data = res.data.map((inv) => ({
+        id: inv.id,
+        user: inv.user,
+        apartment: inv.apartment,
+        description: inv.description,
+        amount: inv.amount,
+        date: inv.date, // YYYY-MM-DD
+        status: inv.status,
+      }));
+      setInvoices(data);
+    } catch (err) {
+      console.error(err);
+      message.error("Failed to load invoices");
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchInvoices();
+  }, [startDate, endDate]);
+
+  const handleMarkAsPaid = (id) => {
+    setInvoices((prev) =>
+      prev.map((inv) => (inv.id === id ? { ...inv, status: "paid" } : inv))
     );
+    // Optionally: POST to backend to update status
   };
 
   const handleCancel = (id) => {
-    setProblems((prev) => prev.filter((p) => p.id !== id));
+    setInvoices((prev) => prev.filter((inv) => inv.id !== id));
+    // Optionally: POST to backend to delete/cancel
   };
 
-  const filterProblems = (list) => {
-    const today = dayjs();
-    return list.filter((item) => {
-      const itemDate = dayjs(item.date);
-      if (filter === "day") return itemDate.isSame(today, "day");
-      if (filter === "month") return itemDate.isSame(today, "month");
-      if (filter === "year") return itemDate.isSame(today, "year");
-      return true;
-    });
-  };
-
-  const filteredProblems = filterProblems(problems);
-  const pending = filteredProblems.filter((p) => p.status === "pending");
-  const resolved = filteredProblems.filter((p) => p.status === "resolved");
+  const unpaid = invoices.filter((inv) => inv.status !== "paid");
+  const paid = invoices.filter((inv) => inv.status === "paid");
 
   return (
     <div style={{ padding: 20 }}>
-      {/* <ProblemFilter selected={filter} onChange={setFilter} /> */}
+      <div style={{ marginBottom: 20 }}>
+        <Select
+          value={filter}
+          suffixIcon={null}
+          onChange={(value) => {
+            setFilter(value);
+            const today = dayjs();
+            if (value === "day") {
+              setStartDate(today.startOf("day").toISOString());
+              setEndDate(today.endOf("day").toISOString());
+            } else if (value === "month") {
+              setStartDate(today.startOf("month").toISOString());
+              setEndDate(today.endOf("month").toISOString());
+            } else if (value === "year") {
+              setStartDate(today.startOf("year").toISOString());
+              setEndDate(today.endOf("year").toISOString());
+            } else {
+              setStartDate(null);
+              setEndDate(null);
+            }
+          }}
+          style={{ width: 200, marginRight: 10 }}
+        >
+          {/* <Option value="day">Today</Option> */}
+          <Option value="month">This Month</Option>
+          <Option value="year">This Year</Option>
+          <Option value="custom">Custom Range</Option>
+        </Select>
 
-      <Tabs defaultActiveKey="1" style={{ marginTop: 20 }}>
-        <TabPane tab="Problem" key="1">
-          {pending.length === 0 ? (
-            <p>Parking Lot working good</p>
-          ) : (
-            pending.map((problem) => (
-              <ProblemItem
-                key={problem.id}
-                problem={problem}
-                showButtons
-                onResolve={handleResolve}
-                onCancel={handleCancel}
-              />
-            ))
-          )}
-        </TabPane>
+        {filter === "custom" && (
+          <RangePicker
+            onChange={(dates) => {
+              if (dates) {
+                setStartDate(dates[0].startOf("day").toISOString());
+                setEndDate(dates[1].endOf("day").toISOString());
+              } else {
+                setStartDate(null);
+                setEndDate(null);
+              }
+            }}
+          />
+        )}
+      </div>
 
-        <TabPane tab="Approved" key="2">
-          {resolved.length === 0 ? (
-            <p>Parking Lot working good</p>
-          ) : (
-            resolved.map((problem) => (
-              <ProblemItem
-                key={problem.id}
-                problem={problem}
-                showButtons={false}
-              />
-            ))
-          )}
-        </TabPane>
-      </Tabs>
+      {loading ? (
+        <Spin />
+      ) : (
+        <Tabs defaultActiveKey="1" style={{ marginTop: 20 }}>
+          <TabPane tab="Unpaid" key="1">
+            {unpaid.length === 0 ? (
+              <p>All invoices are paid</p>
+            ) : (
+              unpaid.map((invoice) => (
+                <div key={invoice.id}>
+                  {getStatusTag(invoice.status)}
+                  <InvoiceItem
+                    invoice={invoice}
+                    showButtons
+                    onMarkAsPaid={handleMarkAsPaid}
+                    onCancel={handleCancel}
+                    dateLabel="Due Date"
+                  />
+                </div>
+              ))              
+            )}
+          </TabPane>
+
+          <TabPane tab="Paid" key="2">
+            {paid.length === 0 ? (
+              <p>No paid invoices</p>
+            ) : (
+              paid.map((invoice) => (
+                <div key={invoice.id}>
+                  {getStatusTag(invoice.status)}
+                  <InvoiceItem invoice={invoice} showButtons={false} dateLabel="Payment Date" />
+                </div>
+              ))
+            )}
+          </TabPane>
+        </Tabs>
+      )}
     </div>
   );
 };

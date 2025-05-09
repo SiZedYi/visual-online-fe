@@ -11,6 +11,11 @@ const MapForm = ({ onFinish, form, editing }) => {
       onFinish={onFinish}
       initialValues={editing}
     >
+      <Form.Item name="svgPath" label="Upload Map Image">
+        <Upload beforeUpload={() => false} maxCount={1}>
+          <Button icon={<UploadOutlined />}>Click to Upload</Button>
+        </Upload>
+      </Form.Item>
       <Form.Item name="name" label="Name" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
@@ -32,11 +37,6 @@ const MapForm = ({ onFinish, form, editing }) => {
         <Input.TextArea rows={4} />
       </Form.Item>
 
-      <Form.Item name="svgPath" label="Upload Map Image">
-        <Upload beforeUpload={() => false} maxCount={1}>
-          <Button icon={<UploadOutlined />}>Click to Upload</Button>
-        </Upload>
-      </Form.Item>
 
       <Form.Item>
         <Button type="primary" htmlType="submit">

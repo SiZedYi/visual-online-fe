@@ -20,8 +20,8 @@ const CarForm = ({ onFinish, form, editing }) => {
     if (editing) {
       form.setFieldsValue({
         licensePlate: editing.licensePlate,
-        model: editing.model,
-        color: editing.color,
+        carModel: editing.model,
+        carColor: editing.color,
         ownerName: editing.ownerInfo?.name,
         contactInfo: editing.ownerInfo?.contactInfo,
         apartment: editing.ownerInfo?.apartment,
@@ -52,7 +52,7 @@ const CarForm = ({ onFinish, form, editing }) => {
       </Form.Item>
 
       <Form.Item
-        name="model"
+        name="carModel"
         label="Model"
         rules={[{ required: true, message: "Please input the model!" }]}
       >
@@ -60,7 +60,7 @@ const CarForm = ({ onFinish, form, editing }) => {
       </Form.Item>
 
       <Form.Item
-        name="color"
+        name="carColor"
         label="Color"
         rules={[{ required: true, message: "Please select the color!" }]}
       >

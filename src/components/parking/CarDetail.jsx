@@ -17,7 +17,7 @@ const CarDetail = ({ carDetails }) => {
     },
     {
       icon: <TagOutlined />,
-      label: "License",
+      label: "License Plate",
       value: carDetails.licensePlate || "Unknown",
     },
     {

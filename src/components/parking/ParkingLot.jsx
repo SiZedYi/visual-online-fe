@@ -46,13 +46,6 @@ const layoutOptions = [
 const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
   const [parkedCars, setParkedCars] = useState({});
   const [userOptions, setUserOptions] = useState([]);
-  // const [user, setUser] = useState(
-  //   JSON.parse(localStorage.getItem("user")) || {
-  //     fullName: "Guest",
-  //     role: "guest",
-  //     permissions: [],
-  //   }
-  // );
   const [currentParkingLotId, setCurrentParkingLotId] = useState(parkingLotId);
   const [layout, setLayout] = useState({
     ...initialLayout,

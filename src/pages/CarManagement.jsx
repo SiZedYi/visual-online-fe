@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Layout, message, Form, Drawer } from "antd";
 import CarForm from "../components/car/CarForm";
 import CarTable from "../components/car/CarTable";
-import { fetchCars } from "../api/parking-lot/api";
+import { fetchCars, updateCar } from "../api/parking-lot/api";
 
 const { Content } = Layout;
 
@@ -65,17 +65,20 @@ const CarManagement = () => {
   const onFinish = async (values) => {
     try {
       if (editing) {
-        console.log(values);
-        message.info("Edit feature not implemented yet.");
+        console.log('Updating car with values:', editing);
+        await updateCar(editing._id, values);
+        message.success('Car updated successfully');
       }
     } catch (error) {
-      message.error("An error occurred.");
+      message.error(error.message || 'An error occurred.');
     } finally {
+      loadCars();
       form.resetFields();
       setEditing(null);
       setDrawerVisible(false);
     }
   };
+  
 
   return (
     <Content style={{ background: "#fff", padding: 20, borderRadius: 20 }}>

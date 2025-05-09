@@ -1,6 +1,6 @@
 import React from "react";
 
-const InvoiceItem = ({ problem, showButtons, onResolve, onCancel }) => {
+const InvoiceItem = ({ invoice, showButtons, onMarkAsPaid, onCancel, dateLabel }) => {
   return (
     <div
       style={{
@@ -11,14 +11,17 @@ const InvoiceItem = ({ problem, showButtons, onResolve, onCancel }) => {
         boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
       }}
     >
-      <h4>{problem.user} - {problem.apartment}</h4>
-      <p>{problem.description}</p>
-      <p style={{ fontStyle: "italic", fontSize: 12 }}>Ngày gửi: {problem.date}</p>
+      <h4>{invoice.user} - {invoice.apartment}</h4>
+      <p>{invoice.description}</p>
+      <p>Total: {invoice.amount.toLocaleString()},000 VND</p>
+      <p style={{ fontStyle: "italic", fontSize: 12 }}>
+      {dateLabel}: {invoice.date}
+      </p>
 
       {showButtons && (
         <div style={{ marginTop: 10 }}>
           <button
-            onClick={() => onResolve(problem.id)}
+            onClick={() => onMarkAsPaid(invoice.id)}
             style={{
               backgroundColor: "#4caf50",
               color: "#fff",
@@ -28,10 +31,10 @@ const InvoiceItem = ({ problem, showButtons, onResolve, onCancel }) => {
               marginRight: 10,
             }}
           >
-            Approved
+            Mark as Paid
           </button>
-          <button
-            onClick={() => onCancel(problem.id)}
+          {/* <button
+            onClick={() => onCancel(invoice.id)}
             style={{
               backgroundColor: "#f44336",
               color: "#fff",
@@ -40,8 +43,8 @@ const InvoiceItem = ({ problem, showButtons, onResolve, onCancel }) => {
               borderRadius: 6,
             }}
           >
-            Hủy
-          </button>
+            Cancel
+          </button> */}
         </div>
       )}
     </div>

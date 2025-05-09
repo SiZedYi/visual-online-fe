@@ -125,6 +125,16 @@ export const createCar = async (carData) => {
   return res.data;
 };
 
+// Update car
+export const updateCar = async (id, carData) => {
+  const res = await axios.put(`${API_URL}/cars/${id}`, carData,
+    {
+      headers: getAuthHeader(),
+    });
+  return res.data;
+};
+
+
 // get Car Detail
 export const getCarDetail = async (carId) => {
   const res = await axios.get(`${API_URL}/cars/${carId}`,
@@ -168,4 +178,11 @@ export const deleteSpot = async (parkingLotId, spotId) => {
     console.error('Error deleting spot:', error);
     throw error;
   }
+};
+
+export const getPayments = async (params) => {
+  const res = await axios.get(`${API_URL}/payments?startDate=${params.startDate}&endDate=${params.endDate}`, {
+    headers: getAuthHeader(),
+  });
+  return res.data;
 };
