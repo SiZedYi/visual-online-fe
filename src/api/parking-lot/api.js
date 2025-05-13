@@ -186,3 +186,17 @@ export const getPayments = async (params) => {
   });
   return res.data;
 };
+
+export const getRevenueStats = async (type, date) => {
+  const res = await axios.get(`${API_URL}/payments/revenue?type=${type}&date=${date}`, {
+    headers: getAuthHeader(),
+  });
+  return res.data;
+};
+
+export const getSummaryStats = async () => {
+  const res = await axios.get(`${API_URL}/payments/summary`, {
+    headers: getAuthHeader(),
+  });
+  return res.data;
+};

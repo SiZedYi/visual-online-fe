@@ -20,6 +20,7 @@ import {
 } from "antd";
 import TopViewCar from "../canvas/Canvas";
 import CarDetail from "./CarDetail";
+import { ReloadOutlined } from "@ant-design/icons";
 
 const { Title, Text } = Typography;
 
@@ -112,52 +113,53 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
     }
   };
 
+  const fetchParkingData = async () => {
+    if (!currentParkingLotId) {
+      setDataLoading(false);
+      return;
+    }
+    setDataLoading(true);
+    try {
+      const isAdmin = user?.isAdmin || false;
+      const response = await getParkingSpots(currentParkingLotId, isAdmin);
+      const carMap = {};
+
+      // Find highest spot ID to properly set counter
+      let highestSpotNumber = 0;
+
+      if (response.data && response.data.parkingSpots) {
+        response.data.parkingSpots.forEach((spot) => {
+          if (spot.currentCar) {
+            carMap[spot.spotId] = {
+              id: spot.currentCar,
+              color: spot.currentCarColor,
+            };
+          }
+
+          // Extract spot number if it follows the Z{number} format
+          if (spot.spotId && spot.spotId.startsWith('Z')) {
+            const spotNumber = parseInt(spot.spotId.substring(1), 10);
+            if (!isNaN(spotNumber) && spotNumber > highestSpotNumber) {
+              highestSpotNumber = spotNumber;
+            }
+          }
+        });
+      }
+
+      // Set spot counter to one higher than highest existing spot number
+      setSpotCounter(highestSpotNumber + 1);
+
+      setParkedCars(carMap);
+      setError(null);
+    } catch (err) {
+      console.error("Failed to load parking data:", err);
+      setError("Failed to load parking data. Please try again later.");
+    } finally {
+      setDataLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchParkingData = async () => {
-      if (!currentParkingLotId) {
-        setDataLoading(false);
-        return;
-      }
-      setDataLoading(true);
-      try {
-        const isAdmin = user?.isAdmin || false;
-        const response = await getParkingSpots(currentParkingLotId, isAdmin);
-        const carMap = {};
-
-        // Find highest spot ID to properly set counter
-        let highestSpotNumber = 0;
-
-        if (response.data && response.data.parkingSpots) {
-          response.data.parkingSpots.forEach((spot) => {
-            if (spot.currentCar) {
-              carMap[spot.spotId] = {
-                id: spot.currentCar,
-                color: spot.currentCarColor,
-              };
-            }
-
-            // Extract spot number if it follows the Z{number} format
-            if (spot.spotId && spot.spotId.startsWith('Z')) {
-              const spotNumber = parseInt(spot.spotId.substring(1), 10);
-              if (!isNaN(spotNumber) && spotNumber > highestSpotNumber) {
-                highestSpotNumber = spotNumber;
-              }
-            }
-          });
-        }
-
-        // Set spot counter to one higher than highest existing spot number
-        setSpotCounter(highestSpotNumber + 1);
-
-        setParkedCars(carMap);
-        setError(null);
-      } catch (err) {
-        console.error("Failed to load parking data:", err);
-        setError("Failed to load parking data. Please try again later.");
-      } finally {
-        setDataLoading(false);
-      }
-    };
     fetchParkingData();
   }, [currentParkingLotId]);
 
@@ -776,6 +778,14 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
                 />
               </Col>
               <Col>
+                <Button
+                  icon={<ReloadOutlined />}
+                  onClick={fetchParkingData}
+                  style={{ marginRight: "8px" }}
+                  disabled={dataLoading}
+                >
+                </Button>
+
                 {editMode && (
                   <Button
                     type={addSpotEnabled ? "primary" : "default"}
@@ -786,6 +796,7 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
                     {addSpotEnabled ? "Disable Add Spot" : "Enable Add Spot"}
                   </Button>
                 )}
+
                 <Button
                   type={editMode ? "primary" : "default"}
                   onClick={toggleEditMode}
@@ -796,6 +807,7 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
               </Col>
             </Row>
           </Card>
+
 
           {error && (
             <Alert

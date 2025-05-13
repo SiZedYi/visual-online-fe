@@ -59,12 +59,20 @@ const InvoiceManagement = () => {
     fetchInvoices();
   }, [startDate, endDate]);
 
-  const handleMarkAsPaid = (id) => {
-    setInvoices((prev) =>
-      prev.map((inv) => (inv.id === id ? { ...inv, status: "paid" } : inv))
-    );
-    // Optionally: POST to backend to update status
+  const handleMarkAsPaid = async (id) => {
+    // Gửi POST tới backend
+    try {
+      await axios.post(`http://localhost:5000/api/payments/set-paid?id=${id}`);
+      // Cập nhật lại state sau khi BE xử lý thành công
+      setInvoices((prev) =>
+        prev.map((inv) => (inv.id === id ? { ...inv, status: "paid" } : inv))
+      );
+    } catch (error) {
+      console.error("Failed to mark as paid:", error);
+      // Có thể hiển thị message lỗi tại đây
+    }
   };
+  
 
   const handleCancel = (id) => {
     setInvoices((prev) => prev.filter((inv) => inv.id !== id));

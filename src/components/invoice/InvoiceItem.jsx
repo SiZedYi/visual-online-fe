@@ -28,6 +28,7 @@ const InvoiceItem = ({ invoice, showButtons, onMarkAsPaid, onCancel, dateLabel }
               border: "none",
               padding: "6px 12px",
               borderRadius: 6,
+              cursor: "pointer",
               marginRight: 10,
             }}
           >

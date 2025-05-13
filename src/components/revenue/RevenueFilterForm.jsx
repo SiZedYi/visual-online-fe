@@ -4,7 +4,7 @@ const { Option } = Select;
 
 const RevenueFilterForm = ({ onFilter }) => {
   const [form] = Form.useForm();
-  const [pickerType, setPickerType] = useState("month"); // state để lưu picker
+  const [pickerType, setPickerType] = useState("year"); // state để lưu picker
 
   const onTypeChange = (value) => {
     setPickerType(value); // cập nhật picker theo lựa chọn
@@ -17,9 +17,8 @@ const RevenueFilterForm = ({ onFilter }) => {
 
   return (
     <Form layout="inline" onFinish={onFinish} form={form}>
-      <Form.Item name="type" initialValue="month">
+      <Form.Item name="type" initialValue="year">
         <Select style={{ width: 120 }} onChange={onTypeChange} suffixIcon={null}>
-          <Option value="month">Month</Option>
           <Option value="year">Year</Option>
         </Select>
       </Form.Item>
@@ -28,7 +27,7 @@ const RevenueFilterForm = ({ onFilter }) => {
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit">
-          Thống kê
+          Filter
         </Button>
       </Form.Item>
     </Form>
