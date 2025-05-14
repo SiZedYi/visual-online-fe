@@ -153,7 +153,12 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
       setError(null);
     } catch (err) {
       console.error("Failed to load parking data:", err);
-      setError("Failed to load parking data. Please try again later.");
+       // Use Ant Design Modal for error notification instead of setting error state
+  Modal.error({
+    title: 'Error Loading Parking Data',
+    content: 'Failed to load parking data. Please try again later.',
+    centered: true,
+  });
     } finally {
       setDataLoading(false);
     }
