@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   getCarDetail,
   getParkingSpots,
@@ -113,7 +113,7 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
     }
   };
 
-  const fetchParkingData = async () => {
+  const fetchParkingData = useCallback(async () => {
     if (!currentParkingLotId) {
       setDataLoading(false);
       return;
@@ -123,10 +123,9 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
       // const isAdmin = user?.isAdmin || false;
       const response = await getParkingSpots(currentParkingLotId, isAdmin);
       const carMap = {};
-
-      // Find highest spot ID to properly set counter
+  
       let highestSpotNumber = 0;
-
+  
       if (response.data && response.data.parkingSpots) {
         response.data.parkingSpots.forEach((spot) => {
           if (spot.currentCar) {
@@ -135,9 +134,8 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
               color: spot.currentCarColor,
             };
           }
-
-          // Extract spot number if it follows the Z{number} format
-          if (spot.spotId && spot.spotId.startsWith('Z')) {
+  
+          if (spot.spotId && spot.spotId.startsWith("Z")) {
             const spotNumber = parseInt(spot.spotId.substring(1), 10);
             if (!isNaN(spotNumber) && spotNumber > highestSpotNumber) {
               highestSpotNumber = spotNumber;
@@ -145,23 +143,27 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
           }
         });
       }
-
-      // Set spot counter to one higher than highest existing spot number
+  
       setSpotCounter(highestSpotNumber + 1);
-
       setParkedCars(carMap);
       setError(null);
     } catch (err) {
       console.error("Failed to load parking data:", err);
-      setError("Failed to load parking data. Please try again later.");
+      Modal.error({
+        title: "Error Loading Parking Data",
+        content: "Failed to load parking data. Please try again later.",
+        centered: true,
+      });
     } finally {
       setDataLoading(false);
     }
-  };
-
+  }, [currentParkingLotId, user?.isAdmin]);
+  
   useEffect(() => {
-    fetchParkingData();
-  }, [currentParkingLotId]);
+    if (currentParkingLotId) {
+      fetchParkingData();
+    }
+  }, [currentParkingLotId, fetchParkingData]);
 
   useEffect(() => {
     if (onLayoutChange && layout) {
@@ -211,50 +213,14 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
   const changeLayout = async (layoutName) => {
     setIsLoading(true);
     setCurrentLayout(layoutName);
-
+  
     try {
-      // First load the SVG to ensure it's available
+      // Load the SVG for the selected layout
       await loadSVG(layoutName);
-
-      // Then fetch the parking data for this floor - update parkingLotId
-      let floorId = layoutName.replace("map", "floor");
-
-      // Cập nhật currentParkingLotId thành floorId mới
-      setCurrentParkingLotId(floorId);
-
-      const response = await getParkingSpots(floorId);
-
-      // Transform the API response to match the expected layout structure
-      const layoutData = {
-        ...response.data,
-        parkingSpots: response.data.parkingSpots || [],
-        width: response.data.width || 800,
-        height: response.data.height || 600
-      };
-
-      // Update the layout state
-      setLayout(layoutData);
-
-      // Reset selections and errors
-      setSelectedSpot(null);
-      setSelectedCar(null);
-      setCarDetails(null);
-      setError(null);
-
-      // IMPORTANT FIX: Reset or update the parkedCars state with the new floor's data
-      const newCarMap = {};
-      if (response.data && response.data.parkingSpots) {
-        response.data.parkingSpots.forEach((spot) => {
-          if (spot.currentCar) {
-            newCarMap[spot.spotId] = {
-              id: spot.currentCar,
-              color: spot.currentCarColor,
-            };
-          }
-        });
-      }
-      setParkedCars(newCarMap);
-
+  
+      // Update the parking lot ID based on the selected layout
+      const floorId = layoutName.replace("map", "floor");
+      setCurrentParkingLotId(floorId); // Update the state
     } catch (err) {
       console.error("Failed to load layout:", err);
       setError("Failed to load floor layout. Please try again later.");
