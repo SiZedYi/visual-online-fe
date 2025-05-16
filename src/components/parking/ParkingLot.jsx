@@ -76,7 +76,7 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
   const [resizeStartPos, setResizeStartPos] = useState({ x: 0, y: 0 });
   const [spotCounter, setSpotCounter] = useState(1); // Start with 1 for spot counter
   const [addSpotEnabled, setAddSpotEnabled] = useState(false); // Toggle for Add Spot functionality
-
+  const [isAdmin, setIsAdmin] = useState(user?.isAdmin); // Toggle for Add Spot functionality
   const carColors = [
     "#FF5733",
     "#33FF57",
@@ -120,7 +120,7 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
     }
     setDataLoading(true);
     try {
-      const isAdmin = user?.isAdmin || false;
+      // const isAdmin = user?.isAdmin || false;
       const response = await getParkingSpots(currentParkingLotId, isAdmin);
       const carMap = {};
 
@@ -796,14 +796,15 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
                     {addSpotEnabled ? "Disable Add Spot" : "Enable Add Spot"}
                   </Button>
                 )}
-
-                <Button
+                {isAdmin && (
+                  <Button
                   type={editMode ? "primary" : "default"}
                   onClick={toggleEditMode}
                   disabled={dataLoading}
                 >
                   {editMode ? "Done" : "Edit"}
-                </Button>
+                </Button>)}
+
               </Col>
             </Row>
           </Card>

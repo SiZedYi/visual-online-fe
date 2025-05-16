@@ -1,2 +1,0 @@
-- ADmin can create user, apartment user will login and only have 2 page, create contract and see detail of contract
-- 1 account can have many contract
