@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Checkbox, Select, message, Table, Tag } from 'antd';
 import axios from 'axios';
-import { fetchUsers, getAuthHeader } from '../../api/parking-lot/api';
+import { fetchUserGroups, fetchUsers, getAuthHeader } from '../../api/parking-lot/api';
 import './index.css';
 
 const { Option } = Select;
@@ -55,24 +55,26 @@ const UserCreate = () => {
     const loadData = async () => {
         setLoading(true);
         try {
-            const res = await fetchUsers();
-            const fetchedUsers = res.data;
-            console.log(fetchedUsers);
+            const [usersRes, groupsRes] = await Promise.all([
+                fetchUsers(),
+                fetchUserGroups()
+            ]);
 
-            // Extract unique userGroups
-            const groupsMap = {};
-            fetchedUsers.forEach((user) => {
-                user.userGroups?.forEach((group) => {
-                    groupsMap[group._id] = group.name;
-                });
-            });
-            const groupOptions = Object.entries(groupsMap).map(([id, name]) => ({ id, name }));
+            const fetchedUsers = usersRes.data;
+            const fetchedGroups = groupsRes.data;
 
             setUsers(fetchedUsers);
+
+            const groupOptions = fetchedGroups.map(group => ({
+                id: group._id,
+                name: group.name
+            }));
+
             setUserGroupOptions(groupOptions);
         } catch (error) {
-            console.error('Error fetching users:', error);
-        } finally {
+            console.error("Error fetching users or groups:", error);
+        }
+        finally {
             setLoading(false);
         }
     };
@@ -112,7 +114,7 @@ const UserCreate = () => {
     return (
         <>
             <h2>User Management</h2>
-            <Form layout="vertical" onFinish={onFinish}>
+            <Form layout="vertical" onFinish={onFinish} >
                 <Form.Item label="Username" name="username" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
