@@ -113,17 +113,15 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
     }
   };
 
-  const fetchParkingData = useCallback(async () => {
-    if (!currentParkingLotId) {
+  const fetchParkingData = useCallback(async (parkingLotId = currentParkingLotId) => {
+    if (!parkingLotId) {
       setDataLoading(false);
       return;
     }
     setDataLoading(true);
     try {
-      // const isAdmin = user?.isAdmin || false;
-      const response = await getParkingSpots(currentParkingLotId, isAdmin);
+      const response = await getParkingSpots(parkingLotId, isAdmin);
       const carMap = {};
-  
       let highestSpotNumber = 0;
   
       if (response.data && response.data.parkingSpots) {
@@ -146,6 +144,10 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
   
       setSpotCounter(highestSpotNumber + 1);
       setParkedCars(carMap);
+      setLayout({
+        ...response.data,
+        parkingSpots: response.data.parkingSpots || [],
+      });
       setError(null);
     } catch (err) {
       console.error("Failed to load parking data:", err);
@@ -157,11 +159,11 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
     } finally {
       setDataLoading(false);
     }
-  }, [currentParkingLotId, user?.isAdmin]);
+  }, [currentParkingLotId, isAdmin]);
   
   useEffect(() => {
     if (currentParkingLotId) {
-      fetchParkingData();
+      fetchParkingData(currentParkingLotId);
     }
   }, [currentParkingLotId, fetchParkingData]);
 
@@ -220,7 +222,10 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
   
       // Update the parking lot ID based on the selected layout
       const floorId = layoutName.replace("map", "floor");
-      setCurrentParkingLotId(floorId); // Update the state
+      setCurrentParkingLotId(floorId);
+  
+      // Fetch new parking data for the selected layout
+      await fetchParkingData(floorId); // Pass the new parking lot ID
     } catch (err) {
       console.error("Failed to load layout:", err);
       setError("Failed to load floor layout. Please try again later.");
@@ -746,7 +751,7 @@ const ParkingLot = ({ initialLayout, onLayoutChange, parkingLotId, user }) => {
               <Col>
                 <Button
                   icon={<ReloadOutlined />}
-                  onClick={fetchParkingData}
+                  onClick={() => fetchParkingData(currentParkingLotId)}
                   style={{ marginRight: "8px" }}
                   disabled={dataLoading}
                 >

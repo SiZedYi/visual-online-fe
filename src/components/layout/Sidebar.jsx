@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Layout, Menu, Avatar, Button, Row, Col } from "antd";
+import { Layout, Menu, Avatar, Button, Row, Col, Image } from "antd";
 import "./index.css"; // Assuming you have a CSS file for styles
 import {
   DashboardOutlined,
@@ -86,7 +86,7 @@ const Sidebar = () => {
       style: { height: "70px", lineHeight: "70px", borderRadius: "10px" },
     },
     isAdmin && {
-      key: "/roles",
+      key: "/user-group",
       icon: <IssuesCloseOutlined style={{ marginRight: 10 }} />,
       label: (
         <NavLink style={{ padding: "20px" }} to="/user-group" replace>
@@ -145,21 +145,35 @@ const Sidebar = () => {
         style={{
           padding: collapsed ? "20px 20px 0 20px" : 20,
           fontWeight: "bold",
-          fontSize: collapsed ? 20 : 36,
           color: "#790097",
           transition: "all 0.3s",
         }}
       >
         {!collapsed ? (
           <>
-            VISUAL ONLINE <br />
-            <span style={{ fontSize: 20, color: "#333" }}>
-              PARKING MANAGER
-            </span>
+            <Row>
+              <Col span={4}>
+                <Image
+                  src="https://iili.io/3PSfkOP.png"
+                  alt="Logo"
+                  style={{ width: 50, height: 50, borderRadius: "40%" }}
+                />
+              </Col>
+              <Col span={18}>
+                <div style={{ fontSize: 26, color: "#790097" }}>
+                  VISUAL ONLINE
+                </div>
+                <div style={{ fontSize: 18, color: "#333" }}>
+                  PARKING MANAGER
+                </div>
+              </Col>
+            </Row>
+
           </>
         ) : (
-          ""
-        )}
+          
+           ""
+          )}
       </div>
 
       {/* Menu */}

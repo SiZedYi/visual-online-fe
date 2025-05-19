@@ -56,7 +56,7 @@ const MapManagement = () => {
   
   const onDelete = async (id) => {
     try {
-      const res = await axios.delete(`http://localhost:5000/api/map/delete`, {
+      const res = await axios.delete(`http://localhost:5000/api/parking/delete`, {
         data: { id },
       });
   

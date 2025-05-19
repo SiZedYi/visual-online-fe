@@ -36,9 +36,6 @@ const convertMap = (mapName, input, values) => {
     return transformedData;
 }
 
-const capitalizeFirstLetter = (string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
 export const processImageToLayout = async (layoutName, values) => {
   try {
     // Return the appropriate layout
@@ -315,19 +312,111 @@ const getLayoutByName = (name) => {
       ],
     },
     'map3': {
-      width: 1100,
-      height: 700,
-      svgPath: '/maps/map3.svg',
-      spots: [
-        { id: 'E1', x: 300, y: 200, width: 30, height: 60 },
-        { id: 'E2', x: 340, y: 200, width: 30, height: 60 },
-        { id: 'E3', x: 380, y: 200, width: 30, height: 60 },
-        { id: 'F1', x: 300, y: 270, width: 30, height: 60 },
-        { id: 'F2', x: 340, y: 270, width: 30, height: 60 },
-        { id: 'F3', x: 380, y: 270, width: 30, height: 60 },
-        // More spots
-      ]
-    },
+    width: 1100,
+    height: 700,
+    svgPath: '/maps/map3.svg',
+    spots: [
+      // Top Row
+      { id: 'A1', x: 50, y: 50, width: 100, height: 300 },
+      { id: 'A2', x: 150, y: 50, width: 150, height: 300 },
+      { id: 'A3', x: 300, y: 50, width: 150, height: 300 },
+      { id: 'A4', x: 450, y: 50, width: 150, height: 300 },
+      { id: 'A5', x: 600, y: 50, width: 150, height: 300 },
+      { id: 'A6', x: 750, y: 50, width: 150, height: 300 },
+      { id: 'A7', x: 900, y: 50, width: 150, height: 300 },
+      
+      // Bottom Row
+      { id: 'B1', x: 50, y: 350, width: 100, height: 300 },
+      { id: 'B2', x: 150, y: 350, width: 150, height: 300 },
+      { id: 'B3', x: 300, y: 350, width: 150, height: 300 },
+      { id: 'B4', x: 450, y: 350, width: 150, height: 300 },
+      { id: 'B5', x: 600, y: 350, width: 150, height: 300 },
+      { id: 'B6', x: 750, y: 350, width: 150, height: 300 },
+      { id: 'B7', x: 900, y: 350, width: 150, height: 300 }
+    ]
+  },
+  'map4': {
+    width: 1100,
+    height: 700,
+    svgPath: '/maps/map4.svg',
+    spots: [
+      // Top row - 17 spots
+      { id: 'A1', x: 140, y: 10, width: 50, height: 130 },
+      { id: 'A2', x: 190, y: 10, width: 50, height: 130 },
+      { id: 'A3', x: 240, y: 10, width: 50, height: 130 },
+      { id: 'A4', x: 290, y: 10, width: 50, height: 130 },
+      { id: 'A5', x: 340, y: 10, width: 50, height: 130 },
+      { id: 'A6', x: 390, y: 10, width: 50, height: 130 },
+      { id: 'A7', x: 440, y: 10, width: 50, height: 130 },
+      { id: 'A8', x: 490, y: 10, width: 50, height: 130 },
+      { id: 'A9', x: 540, y: 10, width: 50, height: 130 },
+      { id: 'A10', x: 590, y: 10, width: 50, height: 130 },
+      { id: 'A11', x: 640, y: 10, width: 50, height: 130 },
+      { id: 'A12', x: 690, y: 10, width: 50, height: 130 },
+      { id: 'A13', x: 740, y: 10, width: 50, height: 130 },
+      { id: 'A14', x: 790, y: 10, width: 50, height: 130 },
+      { id: 'A15', x: 840, y: 10, width: 50, height: 130 },
+      { id: 'A16', x: 890, y: 10, width: 50, height: 130 },
+      { id: 'A17', x: 940, y: 10, width: 50, height: 130 },
+      
+      // Middle row top - 17 spots
+      { id: 'B1', x: 140, y: 230, width: 50, height: 65 },
+      { id: 'B2', x: 190, y: 230, width: 50, height: 65 },
+      { id: 'B3', x: 240, y: 230, width: 50, height: 65 },
+      { id: 'B4', x: 290, y: 230, width: 50, height: 65 },
+      { id: 'B5', x: 340, y: 230, width: 50, height: 65 },
+      { id: 'B6', x: 390, y: 230, width: 50, height: 65 },
+      { id: 'B7', x: 440, y: 230, width: 50, height: 65 },
+      { id: 'B8', x: 490, y: 230, width: 50, height: 65 },
+      { id: 'B9', x: 540, y: 230, width: 50, height: 65 },
+      { id: 'B10', x: 590, y: 230, width: 50, height: 65 },
+      { id: 'B11', x: 640, y: 230, width: 50, height: 65 },
+      { id: 'B12', x: 690, y: 230, width: 50, height: 65 },
+      { id: 'B13', x: 740, y: 230, width: 50, height: 65 },
+      { id: 'B14', x: 790, y: 230, width: 50, height: 65 },
+      { id: 'B15', x: 840, y: 230, width: 50, height: 65 },
+      { id: 'B16', x: 890, y: 230, width: 50, height: 65 },
+      { id: 'B17', x: 940, y: 230, width: 50, height: 65 },
+      
+      // Middle row bottom - 17 spots
+      { id: 'C1', x: 140, y: 295, width: 50, height: 65 },
+      { id: 'C2', x: 190, y: 295, width: 50, height: 65 },
+      { id: 'C3', x: 240, y: 295, width: 50, height: 65 },
+      { id: 'C4', x: 290, y: 295, width: 50, height: 65 },
+      { id: 'C5', x: 340, y: 295, width: 50, height: 65 },
+      { id: 'C6', x: 390, y: 295, width: 50, height: 65 },
+      { id: 'C7', x: 440, y: 295, width: 50, height: 65 },
+      { id: 'C8', x: 490, y: 295, width: 50, height: 65 },
+      { id: 'C9', x: 540, y: 295, width: 50, height: 65 },
+      { id: 'C10', x: 590, y: 295, width: 50, height: 65 },
+      { id: 'C11', x: 640, y: 295, width: 50, height: 65 },
+      { id: 'C12', x: 690, y: 295, width: 50, height: 65 },
+      { id: 'C13', x: 740, y: 295, width: 50, height: 65 },
+      { id: 'C14', x: 790, y: 295, width: 50, height: 65 },
+      { id: 'C15', x: 840, y: 295, width: 50, height: 65 },
+      { id: 'C16', x: 890, y: 295, width: 50, height: 65 },
+      { id: 'C17', x: 940, y: 295, width: 50, height: 65 },
+      
+      // Bottom row - 17 spots
+      { id: 'D1', x: 90, y: 450, width: 50, height: 130 },
+      { id: 'D2', x: 140, y: 450, width: 50, height: 130 },
+      { id: 'D3', x: 190, y: 450, width: 50, height: 130 },
+      { id: 'D4', x: 240, y: 450, width: 50, height: 130 },
+      { id: 'D5', x: 290, y: 450, width: 50, height: 130 },
+      { id: 'D6', x: 340, y: 450, width: 50, height: 130 },
+      { id: 'D7', x: 390, y: 450, width: 50, height: 130 },
+      { id: 'D8', x: 440, y: 450, width: 50, height: 130 },
+      { id: 'D9', x: 490, y: 450, width: 50, height: 130 },
+      { id: 'D10', x: 540, y: 450, width: 50, height: 130 },
+      { id: 'D11', x: 590, y: 450, width: 50, height: 130 },
+      { id: 'D12', x: 640, y: 450, width: 50, height: 130 },
+      { id: 'D13', x: 690, y: 450, width: 50, height: 130 },
+      { id: 'D14', x: 740, y: 450, width: 50, height: 130 },
+      { id: 'D15', x: 790, y: 450, width: 50, height: 130 },
+      { id: 'D16', x: 840, y: 450, width: 50, height: 130 },
+      { id: 'D17', x: 890, y: 450, width: 50, height: 130 }
+    ]
+  },
 
   };
 
