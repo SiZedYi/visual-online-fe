@@ -52,31 +52,31 @@ const UserCreate = () => {
     const [users, setUsers] = useState([]);
     const [userGroupOptions, setUserGroupOptions] = useState([]);
 
-    useEffect(() => {
-        const loadData = async () => {
-            setLoading(true);
-            try {
-                const res = await fetchUsers();
-                const fetchedUsers = res.data;
-                console.log(fetchedUsers);
-                
-                // Extract unique userGroups
-                const groupsMap = {};
-                fetchedUsers.forEach((user) => {
-                    user.userGroups?.forEach((group) => {
-                        groupsMap[group._id] = group.name;
-                    });
-                });
-                const groupOptions = Object.entries(groupsMap).map(([id, name]) => ({ id, name }));
+    const loadData = async () => {
+        setLoading(true);
+        try {
+            const res = await fetchUsers();
+            const fetchedUsers = res.data;
+            console.log(fetchedUsers);
 
-                setUsers(fetchedUsers);
-                setUserGroupOptions(groupOptions);
-            } catch (error) {
-                console.error('Error fetching users:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+            // Extract unique userGroups
+            const groupsMap = {};
+            fetchedUsers.forEach((user) => {
+                user.userGroups?.forEach((group) => {
+                    groupsMap[group._id] = group.name;
+                });
+            });
+            const groupOptions = Object.entries(groupsMap).map(([id, name]) => ({ id, name }));
+
+            setUsers(fetchedUsers);
+            setUserGroupOptions(groupOptions);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
         loadData();
     }, []);
 
@@ -99,6 +99,8 @@ const UserCreate = () => {
                 { headers: getAuthHeader() }
             );
             message.success('User created successfully!');
+            loadData();
+
         } catch (error) {
             console.error(error);
             message.error(error.response.data.message);

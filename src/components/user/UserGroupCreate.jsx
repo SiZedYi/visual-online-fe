@@ -51,18 +51,18 @@ const UserGroupCreate = () => {
     const [loading, setLoading] = useState(false);
     const [userGroups, setUserGroups] = useState([]);
 
+    const loadUserGroups = async () => {
+        setLoading(true);
+        try {
+            const res = await fetchUserGroups();
+            setUserGroups(res.data); // giả sử API trả về { success: true, data: [...] }
+        } catch (error) {
+            console.error('Error fetching user groups:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
     useEffect(() => {
-        const loadUserGroups = async () => {
-            setLoading(true);
-            try {
-                const res = await fetchUserGroups();
-                setUserGroups(res.data); // giả sử API trả về { success: true, data: [...] }
-            } catch (error) {
-                console.error('Error fetching user groups:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
 
         loadUserGroups();
     }, []);
@@ -90,6 +90,8 @@ const UserGroupCreate = () => {
                 headers: getAuthHeader(),
             });
             message.success('User group created successfully!');
+            loadUserGroups();
+
         } catch (error) {
             console.error(error);
             message.error('Failed to create user group.');
@@ -100,7 +102,7 @@ const UserGroupCreate = () => {
 
     return (
         <>
-        <h2>User Permission</h2>
+            <h2>User Permission</h2>
             <Form layout="vertical" onFinish={onFinish}>
                 <Form.Item label="Group Name" name="name" rules={[{ required: true }]}>
                     <Input />
